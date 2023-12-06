@@ -273,15 +273,15 @@ namespace Krisdale_Grocery.DatabaseAccess
                        
                        UPDATE Attendance
                        SET HoursWorked = @HoursWorked
-                       WHERE Id = @Id AND TimeIn = @TimeIn;
+                       WHERE Id = @Id AND SUBSTR(TimeIn,1,10) = @TimeIn;
                         
                     
                         ";
                     command.Parameters.AddWithValue("@Id", employeeId);
                     command.Parameters.AddWithValue("@HoursWorked", hourDifference);
-                    command.Parameters.AddWithValue("@TimeIn", timeIn);
+                    command.Parameters.AddWithValue("@TimeIn", formattedCurrentDate);
 
-
+                    
                     command.ExecuteNonQuery();
 
                     connection.Close();

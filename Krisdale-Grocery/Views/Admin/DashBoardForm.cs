@@ -579,7 +579,7 @@ namespace Krisdale_Grocery.Views.Admin
             if (DatabaseHelper.isAdminAccountExistingPass(EncryptionService.ComputeSha256Hash(userNameExistingTextBox.Text), EncryptionService.ComputeSha256Hash(passwordExistingTextBox.Text)) >= 1)
             {
                 // change the password here
-                MessageBox.Show("ACCOUNT EXIST");
+                MessageBox.Show("Account Password Change Successfully.");
                 DatabaseHelper.ChangeAdminAccountPassword(EncryptionService.ComputeSha256Hash(userNameExistingTextBox.Text), EncryptionService.ComputeSha256Hash(passwordExistingTextBox.Text), EncryptionService.ComputeSha256Hash(newPasswordForExistingTextBox.Text));
             }
             else if (DatabaseHelper.isAdminAccountExistingPass(EncryptionService.ComputeSha256Hash(userNameExistingTextBox.Text), EncryptionService.ComputeSha256Hash(passwordExistingTextBox.Text)) == 0)

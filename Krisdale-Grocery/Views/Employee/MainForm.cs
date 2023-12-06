@@ -93,11 +93,15 @@ namespace Krisdale_Grocery.Views.Employee
             totalAmount -= totalPriceToRemove;
 
             string toRemove = "";
+          
             foreach (var kvp in cartItems)
             {
+                Console.WriteLine(kvp.Value.getProductName());
+                
                 if (kvp.Value.getProductName() ==productName)
                 {
                     toRemove = kvp.Key; // Assuming the key is the ID
+                   
                     break;
                 }
             }
@@ -105,11 +109,7 @@ namespace Krisdale_Grocery.Views.Employee
             totalAmountLabel.Text = $"₱ {Math.Max(totalAmount, 0).ToString("F2")}"; // Ensuring the totalAmount is not negative
 
 
-            Console.WriteLine("LAMAN NI CART WHEN REMOVING ITEMS");
-            foreach (var items in  cartItems)
-            {
-                MessageBox.Show(items.Value.getProductName());
-            }
+           
         }
 
 
