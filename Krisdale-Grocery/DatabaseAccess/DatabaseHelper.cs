@@ -84,6 +84,7 @@ namespace Krisdale_Grocery.DatabaseAccess
             }
 
         }
+
         public static void ClockIn(string username, string password, string timeIn)
         {
             string connectionString = getConnectionString();
@@ -180,15 +181,15 @@ namespace Krisdale_Grocery.DatabaseAccess
                 }
             }
         }
+
+
         public static void InsertHoursWorked(string username, string password)
         {
-
             string connectionString = getConnectionString();
             int employeeId = -1;
             string timeIn = "";
             string timeOut = "";
             DateTime currentDate = DateTime.Now;
-
             string formattedCurrentDate = currentDate.ToString("dd/MM/yyyy");
 
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -197,98 +198,95 @@ namespace Krisdale_Grocery.DatabaseAccess
 
                 using (SQLiteCommand command = new SQLiteCommand(connection))
                 {
-
                     command.CommandText = @"
-
-                        SELECT * FROM EmployeeCredential 
-                        WHERE
-                        Username = @Username AND Password = @Password;";
+                SELECT EmployeeId FROM EmployeeCredential 
+                WHERE Username = @Username AND Password = @Password;";
 
                     command.Parameters.AddWithValue("@Username", username);
                     command.Parameters.AddWithValue("@Password", password);
 
-                    command.ExecuteNonQuery();
-
-
-                    // get the employee id
                     using (SQLiteDataReader reader = command.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            employeeId = reader.GetInt32("EmployeeId");
+                            employeeId = reader.GetInt32(reader.GetOrdinal("EmployeeId"));
                         }
                     }
 
-                    // query to get time in 
+                    // Query to fetch the most recent time-in and time-out pair for the employee on the specified date
                     command.CommandText = @"
-                        SELECT TimeIn FROM ATTENDANCE 
-                        WHERE Id = @Id AND SUBSTR(TimeIn, 1, 10) = @TimeIn
-                    
-                        ";
-                    command.Parameters.AddWithValue("@Id", employeeId);
-                    command.Parameters.AddWithValue("@TimeIn", formattedCurrentDate);
-                    command.ExecuteNonQuery();
+                SELECT TimeIn, TimeOut 
+                FROM ATTENDANCE 
+                WHERE Id = @Id AND SUBSTR(TimeIn, 1, 10) = @FormattedCurrentDate
+                ORDER BY TimeIn DESC
+                LIMIT 1;";
 
-                    // read the contents of query and store in time in
+                    command.Parameters.Clear(); // Clear previous parameters
+                    command.Parameters.AddWithValue("@Id", employeeId);
+                    command.Parameters.AddWithValue("@FormattedCurrentDate", formattedCurrentDate);
+
                     using (SQLiteDataReader reader = command.ExecuteReader())
                     {
                         if (reader.Read())
                         {
                             timeIn = reader.GetString(reader.GetOrdinal("TimeIn"));
-                        }
-                    }
-                    // get time out
-                    command.CommandText = @"
-                        SELECT TimeOut FROM ATTENDANCE 
-                        WHERE Id = @Id AND SUBSTR(TimeOut, 1, 10) = @TimeOut
-                    
-                        ";
-                    command.Parameters.AddWithValue("@Id", employeeId);
-                    command.Parameters.AddWithValue("@TimeOut", formattedCurrentDate);
-                    command.ExecuteNonQuery();
-
-                    using (SQLiteDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
                             timeOut = reader.GetString(reader.GetOrdinal("TimeOut"));
                         }
                     }
 
-                    Console.WriteLine("Employee ID = " + employeeId);
-                    Console.WriteLine("Time in: " + timeIn);
-                    Console.WriteLine("Time out:" + timeOut);
+                    // Calculate hours worked if both time-in and time-out are available
+                    if (!string.IsNullOrEmpty(timeIn) && !string.IsNullOrEmpty(timeOut))
+                    {
+                        DateTime timeInDT = DateTime.ParseExact(timeIn, "dd/MM/yyyy h:mm:ss tt", null);
+                        DateTime timeOutDT = DateTime.ParseExact(timeOut, "dd/MM/yyyy h:mm:ss tt", null);
+
+                        // Calculate the time difference
+                        TimeSpan timeDifference = timeOutDT - timeInDT;
+
+                        // Extract the hour difference
+                        double hourDifference = timeDifference.TotalHours;
+
+                        // Update the hours worked in the database
+                        command.CommandText = @"
+                        UPDATE ATTENDANCE
+                        SET HoursWorked = @HoursWorked
+                        WHERE Id = @Id AND TimeIn = @TimeIn AND TimeOut = @TimeOut;
+                    ";
 
 
-                    DateTime timeInDT = DateTime.ParseExact(timeIn, "dd/MM/yyyy h:mm:ss tt", null);
-                    DateTime timeOutDT = DateTime.ParseExact(timeOut, "dd/MM/yyyy h:mm:ss tt", null);
 
-                    // Calculate the time difference
-                    TimeSpan timeDifference = timeOutDT - timeInDT;
+                        Console.WriteLine(timeIn);
+                        Console.WriteLine(timeOut);
+                        Console.WriteLine(hourDifference);
+                        command.Parameters.Clear(); // Clear previous parameters
+                        command.Parameters.AddWithValue("@Id", employeeId);
+                        command.Parameters.AddWithValue("@HoursWorked", hourDifference);
+                        command.Parameters.AddWithValue("@TimeIn", timeIn);
+                        command.Parameters.AddWithValue("@TimeOut", timeOut);
 
-                    // Extract the hour difference
-                    double hourDifference = timeDifference.TotalHours;
-
-                    command.CommandText = @"
-                       
-                       UPDATE Attendance
-                       SET HoursWorked = @HoursWorked
-                       WHERE Id = @Id AND SUBSTR(TimeIn,1,10) = @TimeIn;
-                        
-                    
-                        ";
-                    command.Parameters.AddWithValue("@Id", employeeId);
-                    command.Parameters.AddWithValue("@HoursWorked", hourDifference);
-                    command.Parameters.AddWithValue("@TimeIn", formattedCurrentDate);
-
-                    
-                    command.ExecuteNonQuery();
+                        int rowsAffected = command.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            Console.WriteLine("Hours worked updated successfully.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("No rows were updated.");
+                        }
+                    }
+                    else
+                    {
+                        // Handle scenarios where time-in or time-out records are not available
+                        // This might indicate that the employee hasn't both clocked in and out for the day
+                        // Handle it accordingly to avoid incorrect hours worked calculation.
+                    }
 
                     connection.Close();
-
                 }
             }
         }
+
+
 
         public static void EditEmployee(string firstName, string lastName, string contactNumber, string startedWorking, byte[] photo, int id)
         {
