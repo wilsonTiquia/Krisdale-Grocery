@@ -49,5 +49,10 @@ namespace Krisdale_Grocery.Views.Employee
         {
             this.Close();
         }
+
+        private void ClockInForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+           
+        }
     }
 }

@@ -50,6 +50,9 @@
             label4 = new Label();
             pageNumberTextBox = new TextBox();
             settingsButton = new Button();
+            label5 = new Label();
+            label6 = new Label();
+            label7 = new Label();
             totalCostPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel2.SuspendLayout();
@@ -91,17 +94,17 @@
             // amountDueLabel
             // 
             amountDueLabel.AutoSize = true;
-            amountDueLabel.Font = new Font("Segoe UI", 21.75F, FontStyle.Regular, GraphicsUnit.Point);
+            amountDueLabel.Font = new Font("Tahoma", 18F, FontStyle.Bold, GraphicsUnit.Point);
             amountDueLabel.Location = new Point(13, 9);
             amountDueLabel.Name = "amountDueLabel";
-            amountDueLabel.Size = new Size(209, 40);
+            amountDueLabel.Size = new Size(195, 29);
             amountDueLabel.TabIndex = 0;
             amountDueLabel.Text = "Amount To Pay";
             // 
             // paymentButtonClick
             // 
             paymentButtonClick.BackColor = Color.Transparent;
-            paymentButtonClick.BackgroundImage = Images.PAYMENT;
+            paymentButtonClick.BackgroundImage = Images.PAYMENT_2;
             paymentButtonClick.BackgroundImageLayout = ImageLayout.Stretch;
             paymentButtonClick.Cursor = Cursors.Hand;
             paymentButtonClick.FlatAppearance.BorderSize = 0;
@@ -118,7 +121,7 @@
             // clockInButton
             // 
             clockInButton.BackColor = Color.Transparent;
-            clockInButton.BackgroundImage = Images.CLOCK_IN;
+            clockInButton.BackgroundImage = Images.CLOCK_IN_3;
             clockInButton.BackgroundImageLayout = ImageLayout.Stretch;
             clockInButton.Cursor = Cursors.Hand;
             clockInButton.FlatAppearance.BorderSize = 0;
@@ -135,7 +138,7 @@
             // clockOutButton
             // 
             clockOutButton.BackColor = Color.Transparent;
-            clockOutButton.BackgroundImage = Images.CLOCK_OUT;
+            clockOutButton.BackgroundImage = Images.CLOCK_OUT_4;
             clockOutButton.BackgroundImageLayout = ImageLayout.Stretch;
             clockOutButton.Cursor = Cursors.Hand;
             clockOutButton.FlatAppearance.BorderSize = 0;
@@ -315,12 +318,53 @@
             // 
             // settingsButton
             // 
+            settingsButton.BackColor = Color.Transparent;
+            settingsButton.BackgroundImage = Images.SETTINGSS1;
+            settingsButton.BackgroundImageLayout = ImageLayout.Stretch;
+            settingsButton.Cursor = Cursors.Hand;
+            settingsButton.FlatAppearance.BorderSize = 0;
+            settingsButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            settingsButton.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            settingsButton.FlatStyle = FlatStyle.Flat;
             settingsButton.Location = new Point(594, 579);
             settingsButton.Name = "settingsButton";
             settingsButton.Size = new Size(140, 90);
             settingsButton.TabIndex = 16;
-            settingsButton.Text = "Settings";
-            settingsButton.UseVisualStyleBackColor = true;
+            settingsButton.UseVisualStyleBackColor = false;
+            settingsButton.Click += settingsButton_Click;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.BackColor = Color.Transparent;
+            label5.Font = new Font("Tahoma", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
+            label5.Location = new Point(631, 36);
+            label5.Name = "label5";
+            label5.Size = new Size(103, 25);
+            label5.TabIndex = 17;
+            label5.Text = "Quantity";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.BackColor = Color.Transparent;
+            label6.Font = new Font("Tahoma", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
+            label6.Location = new Point(794, 36);
+            label6.Name = "label6";
+            label6.Size = new Size(94, 25);
+            label6.TabIndex = 18;
+            label6.Text = "Product";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.BackColor = Color.Transparent;
+            label7.Font = new Font("Tahoma", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
+            label7.Location = new Point(1110, 36);
+            label7.Name = "label7";
+            label7.Size = new Size(64, 25);
+            label7.TabIndex = 19;
+            label7.Text = "Price";
             // 
             // MainForm
             // 
@@ -329,6 +373,9 @@
             BackgroundImage = Images.allformsbackground;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1264, 681);
+            Controls.Add(label7);
+            Controls.Add(label6);
+            Controls.Add(label5);
             Controls.Add(settingsButton);
             Controls.Add(pageNumberTextBox);
             Controls.Add(label4);
@@ -345,6 +392,7 @@
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MainForm";
+            FormClosed += MainForm_FormClosed;
             totalCostPanel.ResumeLayout(false);
             totalCostPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -377,5 +425,8 @@
         private Label totalAmountLabel;
         private Label amountDueLabel;
         private Button settingsButton;
+        private Label label5;
+        private Label label6;
+        private Label label7;
     }
 }

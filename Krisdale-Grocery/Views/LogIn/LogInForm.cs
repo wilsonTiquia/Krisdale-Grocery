@@ -1,5 +1,7 @@
 ﻿using Krisdale_Grocery.DatabaseAccess;
 using Krisdale_Grocery.Service;
+using Krisdale_Grocery.Views.Admin;
+using Krisdale_Grocery.Views.Employee;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,15 +27,42 @@ namespace Krisdale_Grocery.Views.LogIn
             string password = EncryptionService.ComputeSha256Hash(passwordTextBox.Text);
 
 
-            if (DatabaseHelper.isAccountExisting(username,password) == 0)
+          
+            if (DatabaseHelper.isAdminAccountExistingPass(username,password) == 1)
+            {
+                // check if existing in admin
+                MessageBox.Show("Account Exist. Redirecting you to the Admin page");
+
+                DashBoardForm dashBoardForm = new DashBoardForm();
+                dashBoardForm.ShowDialog();
+
+                this.Hide();
+                this.Show();
+                userNameTextBox.Text = string.Empty;
+                passwordTextBox.Text = string.Empty;
+
+            }
+            else if (DatabaseHelper.isAccountExisting(username, password) == 1)
+            {
+                // check if existing in employee
+                MessageBox.Show("Account Exist. Redirecting you to the Main page");
+
+                MainForm mainform = new MainForm();
+                mainform.ShowDialog();
+
+                this.Hide();
+                this.Show();
+
+                userNameTextBox.Text = string.Empty;
+                passwordTextBox.Text = string.Empty;
+            }
+
+            else if (DatabaseHelper.isAdminAccountExistingPass(username, password) == 0)
             {
 
-                MessageBox.Show("Error account does not exist");
+                MessageBox.Show("Error: Account does not exist.");
             }
-            else if(DatabaseHelper.isAccountExisting(username, password) == 1) 
-            {
-                MessageBox.Show("Account Exist. Redirecting you to the Main page");
-            }
+
             else
             {
                 MessageBox.Show("Unknown Error");

@@ -86,50 +86,30 @@ namespace Krisdale_Grocery.Views.Employee
             quantityTextBox.Text = "1";
         }
 
-        //public void AddProduct(string productName, string price)
-        //{
-        //    // Check if the product is already in the cart
-        //    if (cartItems.ContainsKey(productName))
-        //    {
-        //        // Increment the quantity if the product is already in the cart
-        //        int newQuantity = int.Parse(cartItems[productName].getQuantity()) + int.Parse(quantityTextBox.Text);
-        //        cartItems[productName].setQuantity(newQuantity.ToString());
-        //        double totalPrice = newQuantity * double.Parse(price);
-        //        cartItems[productName].setTotal(totalPrice.ToString());
-        //        MessageBox.Show(totalPrice.ToString());
-        //        totalAmount += totalPrice;
-        //        totalAmountLabel.Text = $"{totalAmount.ToString("F2")}";
-        //    }
-        //    else
-        //    {
-        //        double totalPrice = double.Parse(quantityTextBox.Text) * double.Parse(price);
-        //        ItemInCartUserControl itemInCartUserControl = new ItemInCartUserControl();
-        //        itemInCartUserControl.setProductName(productName);
-        //        itemInCartUserControl.setQuantity(quantityTextBox.Text);
-        //        itemInCartUserControl.setPrice(price);
-        //        itemInCartUserControl.setTotal(totalPrice.ToString());
-        //        shoppingListFlowLayoutPanel.Controls.Add(itemInCartUserControl);
-        //        shoppingListFlowLayoutPanel.Refresh();
-
-
-        //        // Add the new product to the cartItems dictionary
-        //        cartItems.Add(productName, itemInCartUserControl);
-        //        // add the total amount
-        //        totalAmount += totalPrice;
-        //        totalAmountLabel.Text = $"{totalAmount.ToString("F2")}";
-        //    }
-
-
-        //    // reset the quantity
-        //    quantityTextBox.Text = "1";
-        //}
+      
         public void removeItemInCart(string productName, string price, string quantity)
         {
             double totalPriceToRemove = double.Parse(price) * double.Parse(quantity);
             totalAmount -= totalPriceToRemove;
 
-            cartItems.Remove(productName);
+            string toRemove = "";
+            foreach (var kvp in cartItems)
+            {
+                if (kvp.Value.getProductName() ==productName)
+                {
+                    toRemove = kvp.Key; // Assuming the key is the ID
+                    break;
+                }
+            }
+            cartItems.Remove(toRemove);
             totalAmountLabel.Text = $"₱ {Math.Max(totalAmount, 0).ToString("F2")}"; // Ensuring the totalAmount is not negative
+
+
+            Console.WriteLine("LAMAN NI CART WHEN REMOVING ITEMS");
+            foreach (var items in  cartItems)
+            {
+                MessageBox.Show(items.Value.getProductName());
+            }
         }
 
 
@@ -328,18 +308,49 @@ namespace Krisdale_Grocery.Views.Employee
             shoppingListFlowLayoutPanel.Refresh();
             InitializeProducts();
             cartItems.Clear();
+            searchTextBox.Text = string.Empty;
         }
 
         private void clockInButton_Click(object sender, EventArgs e)
         {
             ClockInForm clockInForm = new ClockInForm();
             clockInForm.ShowDialog();
+
+            cartItems.Clear();
+            shoppingListFlowLayoutPanel.Controls.Clear();
+            productFlowLayoutPanel.Controls.Clear();
+            InitializeProducts();
+            this.Refresh();
         }
 
         private void clockOutButton_Click(object sender, EventArgs e)
         {
             ClockOutForm clockOutForm = new ClockOutForm();
             clockOutForm.ShowDialog();
+            cartItems.Clear();
+            shoppingListFlowLayoutPanel.Controls.Clear();
+            productFlowLayoutPanel.Controls.Clear();
+            InitializeProducts();
+            this.Refresh();
+        }
+
+        private void settingsButton_Click(object sender, EventArgs e)
+        {
+            
+            EmployeeChangePasswordForm employeeChangePasswordForm = new EmployeeChangePasswordForm();
+            employeeChangePasswordForm.ShowDialog();
+            cartItems.Clear();
+            shoppingListFlowLayoutPanel.Controls.Clear();
+            productFlowLayoutPanel.Controls.Clear();
+            InitializeProducts();
+            this.Refresh();
+
+
+        }
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

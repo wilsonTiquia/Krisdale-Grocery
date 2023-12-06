@@ -29,7 +29,7 @@ namespace Krisdale_Grocery.DatabaseAccess
             }
 
 
-           return $"Data Source={projectFolderPath}/Database/Krisdale.db";
+            return $"Data Source={projectFolderPath}/Database/Krisdale.db";
         }
 
         public static void AddEmployee(string firstName, string lastName, string contactNumber, string startedWorking, byte[] photo, string username, string password)
@@ -63,7 +63,7 @@ namespace Krisdale_Grocery.DatabaseAccess
                     int employeeId = Convert.ToInt32(command.ExecuteScalar());
 
                     // Insert into EmployeeCredential using the retrieved Employee Id
-                    command.CommandText = 
+                    command.CommandText =
                         @"
                         INSERT INTO 
                         EmployeeCredential (EmployeeId, Username, Password) 
@@ -82,7 +82,7 @@ namespace Krisdale_Grocery.DatabaseAccess
                     connection.Close();
                 }
             }
-           
+
         }
         public static void ClockIn(string username, string password, string timeIn)
         {
@@ -102,7 +102,7 @@ namespace Krisdale_Grocery.DatabaseAccess
 
                     command.Parameters.AddWithValue("@Username", username);
                     command.Parameters.AddWithValue("@Password", password);
-                   
+
                     command.ExecuteNonQuery();
 
 
@@ -182,10 +182,115 @@ namespace Krisdale_Grocery.DatabaseAccess
         }
         public static void InsertHoursWorked(string username, string password)
         {
-           
+
+            string connectionString = getConnectionString();
+            int employeeId = -1;
+            string timeIn = "";
+            string timeOut = "";
+            DateTime currentDate = DateTime.Now;
+
+            string formattedCurrentDate = currentDate.ToString("dd/MM/yyyy");
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SQLiteCommand command = new SQLiteCommand(connection))
+                {
+
+                    command.CommandText = @"
+
+                        SELECT * FROM EmployeeCredential 
+                        WHERE
+                        Username = @Username AND Password = @Password;";
+
+                    command.Parameters.AddWithValue("@Username", username);
+                    command.Parameters.AddWithValue("@Password", password);
+
+                    command.ExecuteNonQuery();
+
+
+                    // get the employee id
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            employeeId = reader.GetInt32("EmployeeId");
+                        }
+                    }
+
+                    // query to get time in 
+                    command.CommandText = @"
+                        SELECT TimeIn FROM ATTENDANCE 
+                        WHERE Id = @Id AND SUBSTR(TimeIn, 1, 10) = @TimeIn
+                    
+                        ";
+                    command.Parameters.AddWithValue("@Id", employeeId);
+                    command.Parameters.AddWithValue("@TimeIn", formattedCurrentDate);
+                    command.ExecuteNonQuery();
+
+                    // read the contents of query and store in time in
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            timeIn = reader.GetString(reader.GetOrdinal("TimeIn"));
+                        }
+                    }
+                    // get time out
+                    command.CommandText = @"
+                        SELECT TimeOut FROM ATTENDANCE 
+                        WHERE Id = @Id AND SUBSTR(TimeOut, 1, 10) = @TimeOut
+                    
+                        ";
+                    command.Parameters.AddWithValue("@Id", employeeId);
+                    command.Parameters.AddWithValue("@TimeOut", formattedCurrentDate);
+                    command.ExecuteNonQuery();
+
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            timeOut = reader.GetString(reader.GetOrdinal("TimeOut"));
+                        }
+                    }
+
+                    Console.WriteLine("Employee ID = " + employeeId);
+                    Console.WriteLine("Time in: " + timeIn);
+                    Console.WriteLine("Time out:" + timeOut);
+
+
+                    DateTime timeInDT = DateTime.ParseExact(timeIn, "dd/MM/yyyy h:mm:ss tt", null);
+                    DateTime timeOutDT = DateTime.ParseExact(timeOut, "dd/MM/yyyy h:mm:ss tt", null);
+
+                    // Calculate the time difference
+                    TimeSpan timeDifference = timeOutDT - timeInDT;
+
+                    // Extract the hour difference
+                    double hourDifference = timeDifference.TotalHours;
+
+                    command.CommandText = @"
+                       
+                       UPDATE Attendance
+                       SET HoursWorked = @HoursWorked
+                       WHERE Id = @Id AND TimeIn = @TimeIn;
+                        
+                    
+                        ";
+                    command.Parameters.AddWithValue("@Id", employeeId);
+                    command.Parameters.AddWithValue("@HoursWorked", hourDifference);
+                    command.Parameters.AddWithValue("@TimeIn", timeIn);
+
+
+                    command.ExecuteNonQuery();
+
+                    connection.Close();
+
+                }
+            }
         }
 
-        public static void EditEmployee(string firstName, string lastName, string contactNumber, string startedWorking,byte[] photo, int id)
+        public static void EditEmployee(string firstName, string lastName, string contactNumber, string startedWorking, byte[] photo, int id)
         {
             string connectionString = getConnectionString();
 
@@ -386,7 +491,7 @@ namespace Krisdale_Grocery.DatabaseAccess
             }
         }
 
-        public static int isAccountExisting(string username, string password) 
+        public static int isAccountExisting(string username, string password)
         {
             string connectionString = getConnectionString();
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -395,7 +500,7 @@ namespace Krisdale_Grocery.DatabaseAccess
 
                 using (SQLiteCommand command = new SQLiteCommand(connection))
                 {
-                    command.CommandText = 
+                    command.CommandText =
                         @"
                         SELECT COUNT(*) 
                         FROM EmployeeCredential 
@@ -409,16 +514,180 @@ namespace Krisdale_Grocery.DatabaseAccess
                     connection.Close();
 
                     return count;
-                    
-                   
-                   
+
+
+
+                }
+            }
+        }
+        public static int isAdminAccountExisting(string username)
+        {
+            string connectionString = getConnectionString();
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SQLiteCommand command = new SQLiteCommand(connection))
+                {
+                    command.CommandText =
+                        @"
+                        SELECT COUNT(*) 
+                        FROM Admin 
+                        WHERE Username = @Username";
+
+                    command.Parameters.AddWithValue("@Username", username);
+                
+
+                    int count = Convert.ToInt32(command.ExecuteScalar());
+                    connection.Close();
+
+                    return count;
+
+
+
+                }
+            }
+        }
+        public static int isAdminAccountExistingPass(string username, string password)
+        {
+            string connectionString = getConnectionString();
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SQLiteCommand command = new SQLiteCommand(connection))
+                {
+                    command.CommandText =
+                        @"
+                        SELECT COUNT(*) 
+                        FROM Admin 
+                        WHERE Username = @Username AND Password = @Password" ;
+
+                    command.Parameters.AddWithValue("@Username", username);
+                    command.Parameters.AddWithValue("@Password", password);
+
+                    int count = Convert.ToInt32(command.ExecuteScalar());
+                    connection.Close();
+
+                    return count;
+
+
+
+                }
+            }
+        }
+        public static void ChangeAdminAccountPassword (string username, string password, string newpassword)
+        {
+            string connectionString = getConnectionString();
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SQLiteCommand command = new SQLiteCommand(connection))
+                {
+                    command.CommandText =
+                        @"
+                        UPDATE Admin
+                        SET Password = @NewPassword
+                        WHERE Username = @Username AND Password = @Password";
+
+                    command.Parameters.AddWithValue("@Username", username);
+                    command.Parameters.AddWithValue("@Password", password);
+                    command.Parameters.AddWithValue("@NewPassword", newpassword);
+
+                    command.ExecuteNonQuery();
+                    connection.Close();
+
+
+
+                }
+            }
+        }
+        public static void ChangeEmployeeAccountPassword(string username, string password, string newpassword)
+        {
+            string connectionString = getConnectionString();
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SQLiteCommand command = new SQLiteCommand(connection))
+                {
+                    command.CommandText =
+                        @"
+                        UPDATE EmployeeCredential
+                        SET Password = @NewPassword
+                        WHERE Username = @Username AND Password = @Password";
+
+                    command.Parameters.AddWithValue("@Username", username);
+                    command.Parameters.AddWithValue("@Password", password);
+                    command.Parameters.AddWithValue("@NewPassword", newpassword);
+
+                    command.ExecuteNonQuery();
+                    connection.Close();
+
+
+
                 }
             }
         }
 
+        public static int GetNumberOfEmployees()
+        {
+            string connectionString = getConnectionString();
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SQLiteCommand command = new SQLiteCommand(connection))
+                {
+                    command.CommandText =
+                        @"
+                        SELECT COUNT(*) 
+                        FROM Employee
+                        ";
 
 
 
+
+                    int count = Convert.ToInt32(command.ExecuteScalar());
+                    connection.Close();
+
+                    return count;
+
+
+
+                }
+            }
+
+        }
+
+        public static void AddAdminAccount(string username, string password)
+        {
+            string connectionString = getConnectionString();
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SQLiteCommand command = new SQLiteCommand(connection))
+                {
+                    command.CommandText = @"
+
+                        INSERT INTO 
+                        Admin (Username, Password) 
+                        VALUES
+                        (@Username, @Password);
+                        ";
+
+                    command.Parameters.AddWithValue("@Username", username);
+                    command.Parameters.AddWithValue("@Password", password);
+
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+
+
+            }
+        }
     }
-   
 }

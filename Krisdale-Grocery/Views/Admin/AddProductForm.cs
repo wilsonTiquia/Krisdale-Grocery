@@ -21,11 +21,25 @@ namespace Krisdale_Grocery.Views.Admin
         private void saveImageButton_Click(object sender, EventArgs e)
         {
 
-            double priceDouble = double.Parse(priceTextBox.Text);
-            int quantity = int.Parse(quantityTextBox.Text);
-            DatabaseHelper.AddProduct(nameTextBox.Text, priceDouble, quantity, getImage());
-            MessageBox.Show("Product Added");
-            clearAllFields();
+          
+            if (double.TryParse(priceTextBox.Text, out double priceDouble))
+            {
+                if (int.TryParse(quantityTextBox.Text, out int quantityInt)) 
+                { 
+                    if (nameTextBox.Text != string.Empty) 
+                    {
+                        DatabaseHelper.AddProduct(nameTextBox.Text, priceDouble, quantityInt, getImage());
+                        MessageBox.Show("Product Added");
+                        clearAllFields();
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Make sure to add a product name. Make sure the price contains floating point or whole number. Make Sure that the quantity contains Whole Number");
+            }
+            
+          
 
         }
         private byte[] getImage()

@@ -75,7 +75,7 @@ namespace Krisdale_Grocery.Views.Employee
                     if (parentForm is MainForm mainForm)
                     {
                         // Optionally, call a method in MainForm to remove the product from the cart if needed
-                        mainForm.removeItemInCart(productNameLabel.Text, priceLabel.Text, quantityLabel.Text);
+                        mainForm.removeItemInCart(id.ToString(), priceLabel.Text, quantityLabel.Text);
                     }
                     if (parent.Controls.Contains(this))
                     {

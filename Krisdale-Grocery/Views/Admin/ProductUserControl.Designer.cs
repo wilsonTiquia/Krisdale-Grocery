@@ -40,7 +40,7 @@
             // 
             productImagePictureBox.BackgroundImageLayout = ImageLayout.Stretch;
             productImagePictureBox.Image = Images.NOPRODUCTAVAILABLE;
-            productImagePictureBox.Location = new Point(37, 20);
+            productImagePictureBox.Location = new Point(14, 20);
             productImagePictureBox.Name = "productImagePictureBox";
             productImagePictureBox.Size = new Size(122, 103);
             productImagePictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -50,7 +50,7 @@
             // productNameLabel
             // 
             productNameLabel.AutoSize = true;
-            productNameLabel.Location = new Point(61, 126);
+            productNameLabel.Location = new Point(14, 126);
             productNameLabel.Name = "productNameLabel";
             productNameLabel.Size = new Size(84, 15);
             productNameLabel.TabIndex = 1;
@@ -59,7 +59,7 @@
             // quantityLabel
             // 
             quantityLabel.AutoSize = true;
-            quantityLabel.Location = new Point(61, 151);
+            quantityLabel.Location = new Point(14, 152);
             quantityLabel.Name = "quantityLabel";
             quantityLabel.Size = new Size(55, 15);
             quantityLabel.TabIndex = 2;
@@ -68,7 +68,7 @@
             // priceLabel
             // 
             priceLabel.AutoSize = true;
-            priceLabel.Location = new Point(61, 176);
+            priceLabel.Location = new Point(14, 179);
             priceLabel.Name = "priceLabel";
             priceLabel.Size = new Size(33, 15);
             priceLabel.TabIndex = 3;
@@ -87,14 +87,16 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.Beige;
+            BackColor = Color.FromArgb(244, 244, 244);
+            BorderStyle = BorderStyle.FixedSingle;
             Controls.Add(idLabel);
             Controls.Add(priceLabel);
             Controls.Add(quantityLabel);
             Controls.Add(productNameLabel);
             Controls.Add(productImagePictureBox);
+            Margin = new Padding(10);
             Name = "ProductUserControl";
-            Size = new Size(199, 200);
+            Size = new Size(151, 196);
             Click += ProductUserControl_Click;
             ((System.ComponentModel.ISupportInitialize)productImagePictureBox).EndInit();
             ResumeLayout(false);

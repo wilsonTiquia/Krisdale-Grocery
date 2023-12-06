@@ -34,7 +34,7 @@ namespace Krisdale_Grocery.Views.Employee
                 int quantity = item.Value.Quantity;
 
                 DatabaseHelper.EditProductQuantity(productid, quantity);
-              
+
             }
             this.Close();
         }
@@ -87,7 +87,7 @@ namespace Krisdale_Grocery.Views.Employee
                 string padding = new string(' ', paddingSpaces);
 
                 // Format each item with the calculated padding
-                string itemLine = $"{productId,-10} {productName}{padding} {quantity,5} x {price,-10} = {totalPrice}\n";
+                string itemLine = $"{productName}{padding} {quantity,5} x {price,-10} = {totalPrice}\n";
                 cartRichTextBox.AppendText(itemLine);
             }
 

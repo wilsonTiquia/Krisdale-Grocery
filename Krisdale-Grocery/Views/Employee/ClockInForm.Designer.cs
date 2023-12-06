@@ -110,6 +110,7 @@
             Name = "ClockInForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "ClockInForm";
+            FormClosed += ClockInForm_FormClosed;
             ResumeLayout(false);
             PerformLayout();
         }

@@ -65,5 +65,10 @@ namespace Krisdale_Grocery.Views.Admin
         {
             uploadedImagePictureBox.Image = Krisdale_Grocery.Images.blank_picture;
         }
+
+        private void backToMainMenuButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

@@ -54,8 +54,8 @@ namespace Krisdale_Grocery.Views.Admin
         {
             try
             {
-            
-               
+
+
                 using (MemoryStream ms = new MemoryStream(imageData))
                 {
 
@@ -70,18 +70,18 @@ namespace Krisdale_Grocery.Views.Admin
             }
 
         }
-   
+
 
         private void ProductUserControl_Click(object sender, EventArgs e)
         {
             // create a product model
-         
-          
+
+
 
             //
             editProductForm = new EditProductForm();
             editProductForm.productModel = productModel;
-          
+
             editProductForm.ShowDialog();
 
             Control parent = this.Parent; // Get the immediate parent of the UserControl
@@ -95,10 +95,10 @@ namespace Krisdale_Grocery.Views.Admin
 
                     Form parentForm = flowLayoutPanel.FindForm();
 
-                    if (parentForm is ViewProductForm viewProductForm)
+                    if (parentForm is DashBoardForm dashboardForm)
                     {
                         // Assuming initializeProducts is a public method in ViewProductsForm
-                        viewProductForm.InitializeProducts(); // Call initializeProducts
+                        dashboardForm.LoadProducts(); // Call initializeProducts
                     }
                     // Optionally, break out of the loop if found
                     break;
@@ -107,7 +107,7 @@ namespace Krisdale_Grocery.Views.Admin
                 parent = parent.Parent; // Move up in the control hierarchy
             }
 
-     
+
 
 
         }

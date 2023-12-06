@@ -97,7 +97,8 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.Lavender;
+            BackColor = Color.FromArgb(244, 244, 244);
+            BorderStyle = BorderStyle.FixedSingle;
             Controls.Add(employeeIDLabel);
             Controls.Add(startedWorkingLabel);
             Controls.Add(contactNumberLabel);
@@ -105,7 +106,7 @@
             Controls.Add(firstNameLabel);
             Controls.Add(employeePictureBox);
             Name = "EmployeeUserControl";
-            Size = new Size(360, 184);
+            Size = new Size(605, 182);
             Click += EmployeeUserControl_Click;
             ((System.ComponentModel.ISupportInitialize)employeePictureBox).EndInit();
             ResumeLayout(false);

@@ -99,21 +99,21 @@
             // 
             nameTextBox.Location = new Point(205, 51);
             nameTextBox.Name = "nameTextBox";
-            nameTextBox.Size = new Size(120, 23);
+            nameTextBox.Size = new Size(211, 23);
             nameTextBox.TabIndex = 5;
             // 
             // priceTextBox
             // 
             priceTextBox.Location = new Point(207, 89);
             priceTextBox.Name = "priceTextBox";
-            priceTextBox.Size = new Size(118, 23);
+            priceTextBox.Size = new Size(209, 23);
             priceTextBox.TabIndex = 6;
             // 
             // quantityTextBox
             // 
             quantityTextBox.Location = new Point(207, 122);
             quantityTextBox.Name = "quantityTextBox";
-            quantityTextBox.Size = new Size(118, 23);
+            quantityTextBox.Size = new Size(209, 23);
             quantityTextBox.TabIndex = 7;
             // 
             // uploadImageButton
@@ -171,7 +171,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Images.allformsbackground;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(718, 397);
             Controls.Add(backToMenuButton);
             Controls.Add(clearAllFieldsButton);
             Controls.Add(saveImageButton);
@@ -186,6 +186,7 @@
             Controls.Add(priceLabel);
             Controls.Add(nameLabel);
             Name = "AddProductForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "AddProductForm";
             ((System.ComponentModel.ISupportInitialize)uploadedImagePictureBox).EndInit();
             ResumeLayout(false);

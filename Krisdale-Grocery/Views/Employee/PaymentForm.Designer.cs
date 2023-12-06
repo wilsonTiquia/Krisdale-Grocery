@@ -135,7 +135,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Images.allformsbackground;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(1264, 681);
+            ClientSize = new Size(1145, 681);
             Controls.Add(cartRichTextBox);
             Controls.Add(closeButton);
             Controls.Add(computeButton);

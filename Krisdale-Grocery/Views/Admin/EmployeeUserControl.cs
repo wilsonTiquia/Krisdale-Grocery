@@ -16,7 +16,7 @@ namespace Krisdale_Grocery.Views.Admin
 
         private EmployeeModel employeeModel;
         private EditEmployeeForm editEmployeeForm;
-       
+
         public EmployeeUserControl()
         {
             InitializeComponent();
@@ -26,7 +26,7 @@ namespace Krisdale_Grocery.Views.Admin
         public void setId(string id)
         {
             employeeModel.Id = int.Parse(id);
-            employeeIDLabel.Text = $"Employee#{id}";
+            employeeIDLabel.Text = $"Employee ID#{id}";
 
         }
         public void setFirstName(string name)
@@ -85,10 +85,11 @@ namespace Krisdale_Grocery.Views.Admin
 
                     Form parentForm = flowLayoutPanel.FindForm();
 
-                    if (parentForm is ViewEmployeeForm viewEmployeeForm)
+                    if (parentForm is DashBoardForm dashboardForm)
                     {
-                        // Assuming initializeProducts is a public method in ViewProductsForm
-                        viewEmployeeForm.InitializeEmployee(); // Call initializeProducts
+                        // Assuming initializeProducts is a public method in initialize employee
+                        dashboardForm.InitializeEmployee(); // Call initializ employee
+                        dashboardForm.InitializeEmployeeCount();
                     }
                     // Optionally, break out of the loop if found
                     break;

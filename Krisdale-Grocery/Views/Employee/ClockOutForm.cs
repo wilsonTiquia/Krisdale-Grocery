@@ -38,7 +38,7 @@ namespace Krisdale_Grocery.Views.Employee
             {
                 MessageBox.Show("You are now Clocked Out!");
                 // save to database
-                DateTime date = DateTime.Now.AddHours(2);
+                DateTime date = DateTime.Now.AddHours(5);
                 DatabaseHelper.ClockOut(username, password, date.ToString());
                
                 DatabaseHelper.InsertHoursWorked(username, password);

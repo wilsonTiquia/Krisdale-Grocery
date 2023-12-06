@@ -127,8 +127,14 @@
   <data name="CLOCK_IN" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\CLOCK IN.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="CLOCK_IN_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\CLOCK_IN_3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="CLOCK_OUT" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\CLOCK OUT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CLOCK_OUT_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\CLOCK_OUT_4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="drop_down_arrow_pointing_down" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\drop-down-arrow-pointing-down.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -154,7 +160,19 @@
   <data name="PAYMENT" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\PAYMENT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="PAYMENT_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\PAYMENT_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="RECEIPT" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\RECEIPT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="searchimage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\searchimage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="settings" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\settings.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SETTINGSS1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\SETTINGSS1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

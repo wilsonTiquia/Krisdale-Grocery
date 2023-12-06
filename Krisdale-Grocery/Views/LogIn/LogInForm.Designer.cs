@@ -108,6 +108,7 @@
             Controls.Add(label1);
             DoubleBuffered = true;
             Name = "LogInForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "LogInForm";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);

@@ -158,7 +158,7 @@
             // 
             // saveButton
             // 
-            saveButton.Location = new Point(183, 262);
+            saveButton.Location = new Point(229, 263);
             saveButton.Name = "saveButton";
             saveButton.Size = new Size(100, 46);
             saveButton.TabIndex = 12;
@@ -168,7 +168,7 @@
             // 
             // clearAllButton
             // 
-            clearAllButton.Location = new Point(308, 262);
+            clearAllButton.Location = new Point(360, 263);
             clearAllButton.Name = "clearAllButton";
             clearAllButton.Size = new Size(92, 46);
             clearAllButton.TabIndex = 13;
@@ -178,19 +178,20 @@
             // 
             // backToMainMenuButton
             // 
-            backToMainMenuButton.Location = new Point(180, 330);
+            backToMainMenuButton.Location = new Point(284, 329);
             backToMainMenuButton.Name = "backToMainMenuButton";
             backToMainMenuButton.Size = new Size(124, 52);
             backToMainMenuButton.TabIndex = 14;
             backToMainMenuButton.Text = "Back To Main Menu";
             backToMainMenuButton.UseVisualStyleBackColor = true;
+            backToMainMenuButton.Click += backToMainMenuButton_Click;
             // 
             // AddEmployeeForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Images.allformsbackground;
-            ClientSize = new Size(786, 438);
+            ClientSize = new Size(755, 412);
             Controls.Add(backToMainMenuButton);
             Controls.Add(clearAllButton);
             Controls.Add(saveButton);
@@ -207,6 +208,7 @@
             Controls.Add(lastNameLabel);
             Controls.Add(firstNameLabel);
             Name = "AddEmployeeForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "AddEmployeeForm";
             ((System.ComponentModel.ISupportInitialize)uploadedImagePictureBox).EndInit();
             ResumeLayout(false);
