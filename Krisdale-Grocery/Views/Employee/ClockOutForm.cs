@@ -33,6 +33,7 @@ namespace Krisdale_Grocery.Views.Employee
             {
 
                 MessageBox.Show("Error: Invalid username or password");
+                DatabaseHelper.InsertLog(username, DateTime.Now, "Attempted to clock in with incorrect credentials:" + username);
             }
             else if (DatabaseHelper.isAccountExisting(username, password) == 1)
             {
@@ -40,7 +41,7 @@ namespace Krisdale_Grocery.Views.Employee
                 // save to database
                 DateTime date = DateTime.Now.AddHours(5);
                 DatabaseHelper.ClockOut(username, password, date.ToString());
-               
+                DatabaseHelper.InsertLog(username, DateTime.Now, "Clock out success at this time:" + username);
                 DatabaseHelper.InsertHoursWorked(username, password);
                 userNameTextBox.Text = string.Empty;
                 passwordTextBox.Text = string.Empty;
