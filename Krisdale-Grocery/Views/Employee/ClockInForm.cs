@@ -26,7 +26,7 @@ namespace Krisdale_Grocery.Views.Employee
             if (DatabaseHelper.isAccountExisting(username, password) == 0)
             {
 
-                MessageBox.Show("Error account does not exist");
+                MessageBox.Show("Error: Invalid username or password");
             }
             else if (DatabaseHelper.isAccountExisting(username, password) == 1)
             {

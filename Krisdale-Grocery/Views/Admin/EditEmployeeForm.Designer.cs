@@ -43,6 +43,9 @@
             deleteEmployeeButton = new Button();
             backToMainMenuButton = new Button();
             employeeImagePictureBox = new PictureBox();
+            lNameRule = new Label();
+            numberRules = new Label();
+            fNameRule = new Label();
             ((System.ComponentModel.ISupportInitialize)employeeImagePictureBox).BeginInit();
             SuspendLayout();
             // 
@@ -102,6 +105,7 @@
             firstNameTextBox.Name = "firstNameTextBox";
             firstNameTextBox.Size = new Size(215, 23);
             firstNameTextBox.TabIndex = 5;
+            firstNameTextBox.TextChanged += firstNameTextBox_TextChanged;
             // 
             // lastNameTextBox
             // 
@@ -109,6 +113,7 @@
             lastNameTextBox.Name = "lastNameTextBox";
             lastNameTextBox.Size = new Size(215, 23);
             lastNameTextBox.TabIndex = 6;
+            lastNameTextBox.TextChanged += lastNameTextBox_TextChanged;
             // 
             // contactNumberTextBox
             // 
@@ -116,6 +121,7 @@
             contactNumberTextBox.Name = "contactNumberTextBox";
             contactNumberTextBox.Size = new Size(215, 23);
             contactNumberTextBox.TabIndex = 7;
+            contactNumberTextBox.TextChanged += contactNumberTextBox_TextChanged;
             // 
             // dateTimePicker1
             // 
@@ -185,6 +191,37 @@
             employeeImagePictureBox.TabIndex = 14;
             employeeImagePictureBox.TabStop = false;
             // 
+            // lNameRule
+            // 
+            lNameRule.AutoSize = true;
+            lNameRule.ForeColor = Color.Red;
+            lNameRule.Location = new Point(57, 69);
+            lNameRule.Name = "lNameRule";
+            lNameRule.Size = new Size(213, 15);
+            lNameRule.TabIndex = 20;
+            lNameRule.Text = "Last Name must be 3-15 Characters a-z";
+            // 
+            // numberRules
+            // 
+            numberRules.AutoSize = true;
+            numberRules.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            numberRules.ForeColor = Color.Red;
+            numberRules.Location = new Point(57, 109);
+            numberRules.Name = "numberRules";
+            numberRules.Size = new Size(181, 13);
+            numberRules.TabIndex = 19;
+            numberRules.Text = "Contact number must be 11 digits";
+            // 
+            // fNameRule
+            // 
+            fNameRule.AutoSize = true;
+            fNameRule.ForeColor = Color.Red;
+            fNameRule.Location = new Point(53, 22);
+            fNameRule.Name = "fNameRule";
+            fNameRule.Size = new Size(214, 15);
+            fNameRule.TabIndex = 18;
+            fNameRule.Text = "First Name must be 3-15 Characters a-z";
+            // 
             // EditEmployeeForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -192,6 +229,9 @@
             BackgroundImage = Images.allformsbackground;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(800, 450);
+            Controls.Add(lNameRule);
+            Controls.Add(numberRules);
+            Controls.Add(fNameRule);
             Controls.Add(employeeImagePictureBox);
             Controls.Add(backToMainMenuButton);
             Controls.Add(deleteEmployeeButton);
@@ -233,5 +273,8 @@
         private Button deleteEmployeeButton;
         private Button backToMainMenuButton;
         private PictureBox employeeImagePictureBox;
+        private Label lNameRule;
+        private Label numberRules;
+        private Label fNameRule;
     }
 }

@@ -9,8 +9,10 @@ using System.Data.SQLite;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Krisdale_Grocery.Views.Admin
 {
@@ -20,6 +22,8 @@ namespace Krisdale_Grocery.Views.Admin
         private int currentPage = 1; // Current page
         int numberOfEmployee;
         private int totalRecordsCount;
+
+        public String UsernameLoggedIn { get; set; }
         public DashBoardForm()
         {
             InitializeComponent();
@@ -31,6 +35,7 @@ namespace Krisdale_Grocery.Views.Admin
 
             InitializeAttendance();
 
+
         }
 
         private void DashBoardForm_Load(object sender, EventArgs e)
@@ -38,6 +43,7 @@ namespace Krisdale_Grocery.Views.Admin
             mainPanel.Show();
 
             crudEmployeeLabel.BorderStyle = BorderStyle.FixedSingle;
+            userNameExistingTextBox.Text = this.UsernameLoggedIn;
         }
         private void getTotalProducts()
         {
@@ -112,6 +118,7 @@ namespace Krisdale_Grocery.Views.Admin
         private void button1_Click(object sender, EventArgs e)
         {
             AddEmployeeForm addEmployeeForm = new AddEmployeeForm();
+            addEmployeeForm.Username = this.UsernameLoggedIn;
             addEmployeeForm.ShowDialog();
 
             employeeFlowLayoutPanel.Controls.Clear();
@@ -340,6 +347,7 @@ namespace Krisdale_Grocery.Views.Admin
         private void addProductButton_Click(object sender, EventArgs e)
         {
             AddProductForm addProductForm = new AddProductForm();
+            addProductForm.Username = this.UsernameLoggedIn;
             addProductForm.ShowDialog();
 
             LoadProducts();
@@ -538,29 +546,63 @@ namespace Krisdale_Grocery.Views.Admin
 
         private void addNewAdminAccount_Click(object sender, EventArgs e)
         {
-
-            if (DatabaseHelper.isAdminAccountExisting(EncryptionService.ComputeSha256Hash(newAccountUsernameTextBox.Text)) >= 1)
+            // check if ADMIN  account already exist
+            if (DatabaseHelper.isAdminAccountExisting(newAccountUsernameTextBox.Text.ToLower()) >= 1)
             {
                 MessageBox.Show("Account already exist");
 
             }
-
-            else if (newAccountUsernameTextBox.Text.Length > 0 && newAccountPasswordTextBox.Text.Length > 0 && DatabaseHelper.isAdminAccountExisting(EncryptionService.ComputeSha256Hash(newAccountUsernameTextBox.Text)) == 0)
-            {
-                // save the account
-
-                string username = EncryptionService.ComputeSha256Hash(newAccountUsernameTextBox.Text);
-                string password = EncryptionService.ComputeSha256Hash(newAccountPasswordTextBox.Text);
-
-                DatabaseHelper.AddAdminAccount(username, password);
-                MessageBox.Show("The new Admin has been added!");
-
-                newAccountUsernameTextBox.Text = String.Empty;
-                newAccountPasswordTextBox.Text = String.Empty;
-            }
+            // check if the username length is valid
             else
             {
-                MessageBox.Show("Please write a username and password");
+                // first check the length 
+                bool isUsernameLengthValid = false;
+                bool isPasswordValid = false;
+                bool isSecurityKeyValid = false;
+                string usernamePattern = @"^[a-z]{3,15}$";
+
+                string passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,15}$";
+
+                // if username is valid
+                if (Regex.IsMatch(newAccountUsernameTextBox.Text, usernamePattern))
+                {
+                    isUsernameLengthValid = true;
+                }
+                // if password is valid 
+                if (Regex.IsMatch(newAccountPasswordTextBox.Text, passwordPattern) && newAccountPasswordTextBox.Text == confirmPassword.Text)
+                {
+                    isPasswordValid = true;
+                }
+                // if security key is valid
+                if (Regex.IsMatch(securityKeyTextBox.Text, usernamePattern))
+                {
+                    isSecurityKeyValid = true;
+                }
+                // if all is valid create the account
+                if (isUsernameLengthValid && isPasswordValid && isSecurityKeyValid)
+                {
+                    string username = newAccountUsernameTextBox.Text;
+                    string password = EncryptionService.ComputeSha256Hash(newAccountPasswordTextBox.Text);
+
+                    // add the admin account
+                    DatabaseHelper.AddAdminAccount(username, password, EncryptionService.ComputeSha256Hash(securityKeyTextBox.Text));
+                    DatabaseHelper.addPasswordHistory(username, password);
+                    MessageBox.Show("Account Sucessfully Created");
+                    DatabaseHelper.InsertLog(this.UsernameLoggedIn, DateTime.Now, "created a new admin account: " + username);
+                    // add into the password history
+
+
+                    // clear the fields
+                    newAccountUsernameTextBox.Text = String.Empty;
+                    newAccountPasswordTextBox.Text = String.Empty;
+                    confirmPassword.Text = String.Empty;
+                    securityKeyTextBox.Text = String.Empty;
+                }
+                else
+                {
+                    MessageBox.Show("Please make sure that the username, password and security key matches the rules.");
+                }
+
             }
         }
 
@@ -576,15 +618,122 @@ namespace Krisdale_Grocery.Views.Admin
 
         private void changePasswordButton_Click(object sender, EventArgs e)
         {
-            if (DatabaseHelper.isAdminAccountExistingPass(EncryptionService.ComputeSha256Hash(userNameExistingTextBox.Text), EncryptionService.ComputeSha256Hash(passwordExistingTextBox.Text)) >= 1)
+            if (DatabaseHelper.isAdminAccountExistingPass(userNameExistingTextBox.Text, EncryptionService.ComputeSha256Hash(passwordExistingTextBox.Text)) >= 1)
             {
-                // change the password here
-                MessageBox.Show("Account Password Change Successfully.");
-                DatabaseHelper.ChangeAdminAccountPassword(EncryptionService.ComputeSha256Hash(userNameExistingTextBox.Text), EncryptionService.ComputeSha256Hash(passwordExistingTextBox.Text), EncryptionService.ComputeSha256Hash(newPasswordForExistingTextBox.Text));
+                // change the password here if the name and password is correct but make sure new pass follows the standard
+
+                if (DatabaseHelper.IsPasswordInHistory(userNameExistingTextBox.Text, EncryptionService.ComputeSha256Hash(newPasswordForExistingTextBox.Text)))
+                {
+                    MessageBox.Show("Can't reuse old passwords");
+                    passwordExistingTextBox.Text = String.Empty;
+                    newPasswordForExistingTextBox.Text = string.Empty;
+                }
+                else
+                {
+                    DatabaseHelper.InsertLog(this.UsernameLoggedIn, DateTime.Now, "Successfully Changed the password of  " + this.UsernameLoggedIn);
+                    DatabaseHelper.ChangeAdminAccountPassword(userNameExistingTextBox.Text, EncryptionService.ComputeSha256Hash(passwordExistingTextBox.Text), EncryptionService.ComputeSha256Hash(newPasswordForExistingTextBox.Text));
+                    MessageBox.Show("Account Password Change Successfully.");
+                    this.Close();
+
+
+
+                }
+
             }
-            else if (DatabaseHelper.isAdminAccountExistingPass(EncryptionService.ComputeSha256Hash(userNameExistingTextBox.Text), EncryptionService.ComputeSha256Hash(passwordExistingTextBox.Text)) == 0)
+            // check if it is in the employee
+            // otherwise 
+            else if (DatabaseHelper.isAdminAccountExistingPass(userNameExistingTextBox.Text, EncryptionService.ComputeSha256Hash(passwordExistingTextBox.Text)) == 0)
             {
-                MessageBox.Show("ACCOUNT DOES NOT EXIST");
+                DatabaseHelper.InsertLog(this.UsernameLoggedIn, DateTime.Now, "Failed attempt to change the password of  " + userNameExistingTextBox.Text);
+                MessageBox.Show("Invalid username or password");
+            }
+        }
+
+        private void label13_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void newAccountPasswordTextBox_TextChanged(object sender, EventArgs e)
+        {
+            string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,15}$";
+            if (Regex.IsMatch(newAccountPasswordTextBox.Text, pattern))
+            {
+                passwordRulesLabel.Visible = false;
+
+            }
+            else
+            {
+                passwordRulesLabel.Visible = true;
+            }
+        }
+
+        private void confirmPassword_TextChanged(object sender, EventArgs e)
+        {
+            if (newAccountPasswordTextBox.Text == confirmPassword.Text)
+            {
+                passwordMatchLabel.Visible = false;
+            }
+            else
+            {
+                passwordMatchLabel.Visible = true;
+            }
+        }
+
+        private void newAccountUsernameTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+            string pattern = @"^[a-z]{3,15}$";
+            if (Regex.IsMatch(newAccountUsernameTextBox.Text, pattern))
+            {
+                usernameRuleLabel.Visible = false;
+            }
+            else
+            {
+                usernameRuleLabel.Visible = true;
+            }
+        }
+
+        private void securityKeyTextBox_TextChanged(object sender, EventArgs e)
+        {
+            string pattern = @"^[a-z]{3,15}$";
+            if (Regex.IsMatch(securityKeyTextBox.Text, pattern))
+            {
+                securityKeyRule.Visible = false;
+            }
+            else
+            {
+                securityKeyRule.Visible = true;
+            }
+        }
+
+        private void panel7_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void newPasswordForExistingTextBox_TextChanged(object sender, EventArgs e)
+        {
+            string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,15}$";
+            if (Regex.IsMatch(newPasswordForExistingTextBox.Text, pattern))
+            {
+                changePassRules.Visible = false;
+            }
+            else
+            {
+                changePassRules.Visible = true;
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            viewlogs viewlogs = new viewlogs();
+            viewlogs.ShowDialog();
+            List<string> logs = DatabaseHelper.GetAllLogsAsString();
+
+            foreach (string log in logs)
+            {
+                Console.WriteLine(log);
             }
         }
     }

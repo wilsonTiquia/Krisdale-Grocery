@@ -19,7 +19,7 @@ namespace Krisdale_Grocery.Views.Employee
         private int currentPage = 1; // Current page
         private double totalAmount = 0;
         public Dictionary<string, ItemInCartUserControl> cartItems = new Dictionary<string, ItemInCartUserControl>();
-
+        public String UsernameInUse { get; set; }
         private int totalRecordsCount;
         public MainForm()
         {
@@ -54,9 +54,23 @@ namespace Krisdale_Grocery.Views.Employee
         {
             double productPrice = double.Parse(price) * double.Parse(quantityTextBox.Text);
 
+            // first check if the product quantity is greater than 1 
+
+           
+
             if (cartItems.ContainsKey(id))
             {
+
+
+
+                Console.WriteLine("original count = " + DatabaseHelper.getProductQuantity(productName));
+               
                 int newQuantity = int.Parse(cartItems[id].getQuantity()) + int.Parse(quantityTextBox.Text);
+                if (newQuantity > DatabaseHelper.getProductQuantity(productName))
+                {
+                    MessageBox.Show("The maximum quantity is : " + DatabaseHelper.getProductQuantity(productName));
+                    return;
+                }
                 cartItems[id].setQuantity(newQuantity.ToString());
 
                 double oldTotalPrice = double.Parse(cartItems[id].getTotal());
@@ -65,9 +79,27 @@ namespace Krisdale_Grocery.Views.Employee
                 shoppingListFlowLayoutPanel.Refresh();
                 totalAmount += newTotalPrice - oldTotalPrice;
                 totalAmountLabel.Text = $"{totalAmount.ToString("F2")}";
+
+                Console.WriteLine(cartItems[id].getQuantity());
+                Console.WriteLine("dito");
             }
             else
             {
+                if (cartItems.Count <= 0)
+                {
+                    paymentButtonClick.Enabled = false;
+                }
+                if (int.Parse(quantityTextBox.Text) > DatabaseHelper.getProductQuantity(productName))
+                {
+                    MessageBox.Show("The maximum quantity is : " + DatabaseHelper.getProductQuantity(productName));
+                    return;
+                }
+                if (cartItems.Count > 5)
+                {
+                    MessageBox.Show("Cart is full!" );
+                    return;
+                }
+                Console.WriteLine("original count = " + DatabaseHelper.getProductQuantity(productName));
                 double totalPrice = productPrice;
                 ItemInCartUserControl itemInCartUserControl = new ItemInCartUserControl();
                 itemInCartUserControl.setProductName(productName);
@@ -77,39 +109,46 @@ namespace Krisdale_Grocery.Views.Employee
 
                 shoppingListFlowLayoutPanel.Controls.Add(itemInCartUserControl);
                 shoppingListFlowLayoutPanel.Refresh();
+
+
                 cartItems.Add(id, itemInCartUserControl);
 
                 totalAmount += totalPrice;
                 totalAmountLabel.Text = $"{totalAmount.ToString("F2")}";
+
+
+                paymentButtonClick.Enabled = true;
+
             }
+
 
             quantityTextBox.Text = "1";
         }
 
-      
+
         public void removeItemInCart(string productName, string price, string quantity)
         {
             double totalPriceToRemove = double.Parse(price) * double.Parse(quantity);
             totalAmount -= totalPriceToRemove;
 
             string toRemove = "";
-          
+
             foreach (var kvp in cartItems)
             {
                 Console.WriteLine(kvp.Value.getProductName());
-                
-                if (kvp.Value.getProductName() ==productName)
+
+                if (kvp.Value.getProductName() == productName)
                 {
                     toRemove = kvp.Key; // Assuming the key is the ID
-                   
+
                     break;
                 }
             }
             cartItems.Remove(toRemove);
             totalAmountLabel.Text = $"₱ {Math.Max(totalAmount, 0).ToString("F2")}"; // Ensuring the totalAmount is not negative
 
-
-           
+            Console.WriteLine(cartItems.Count);
+         
         }
 
 
@@ -298,17 +337,37 @@ namespace Krisdale_Grocery.Views.Employee
 
         private void paymentButtonClick_Click(object sender, EventArgs e)
         {
-            PaymentForm paymentForm = new PaymentForm();
-            paymentForm.cartItems = cartItems;
-            paymentForm.totalAmount = totalAmount;
-            paymentForm.ShowDialog();
-            totalAmount = 0;
-            totalAmountLabel.Text = "₱ 0.00";
-            shoppingListFlowLayoutPanel.Controls.Clear();
-            shoppingListFlowLayoutPanel.Refresh();
-            InitializeProducts();
-            cartItems.Clear();
-            searchTextBox.Text = string.Empty;
+            if (cartItems.Count > 0)
+            {
+                PaymentForm paymentForm = new PaymentForm();
+                paymentForm.cartItems = cartItems;
+                paymentForm.totalAmount = totalAmount;
+                paymentForm.ShowDialog();
+                totalAmount = 0;
+                totalAmountLabel.Text = "₱ 0.00";
+                shoppingListFlowLayoutPanel.Controls.Clear();
+                shoppingListFlowLayoutPanel.Refresh();
+                InitializeProducts();
+                cartItems.Clear();
+                searchTextBox.Text = string.Empty;
+            }
+            else
+            {
+                MessageBox.Show("add a product first.");
+
+            }
+
+            //PaymentForm paymentForm = new PaymentForm();
+            //paymentForm.cartItems = cartItems;
+            //paymentForm.totalAmount = totalAmount;
+            //paymentForm.ShowDialog();
+            //totalAmount = 0;
+            //totalAmountLabel.Text = "₱ 0.00";
+            //shoppingListFlowLayoutPanel.Controls.Clear();
+            //shoppingListFlowLayoutPanel.Refresh();
+            //InitializeProducts();
+            //cartItems.Clear();
+            //searchTextBox.Text = string.Empty;
         }
 
         private void clockInButton_Click(object sender, EventArgs e)
@@ -336,21 +395,47 @@ namespace Krisdale_Grocery.Views.Employee
 
         private void settingsButton_Click(object sender, EventArgs e)
         {
-            
+
             EmployeeChangePasswordForm employeeChangePasswordForm = new EmployeeChangePasswordForm();
+            employeeChangePasswordForm.UsernameLoggedIn = cashierName.Text;
             employeeChangePasswordForm.ShowDialog();
             cartItems.Clear();
             shoppingListFlowLayoutPanel.Controls.Clear();
             productFlowLayoutPanel.Controls.Clear();
             InitializeProducts();
             this.Refresh();
+            employeeChangePasswordForm.PasswordChangedSuccessfully += CloseBothForms;
+            this.Close();
 
-
+        }
+        private void CloseBothForms()
+        {
+            // Close the main form
+            this.Close();
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.Close();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            cashierName.Text = this.UsernameInUse;
+        }
+
+        private void shoppingListFlowLayoutPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void quantityTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if(quantityTextBox.Text == "0")
+            {
+                MessageBox.Show("Quantity cant be less than 1");
+                quantityTextBox.Text = "1";
+            }
         }
     }
 }

@@ -34,6 +34,11 @@
             logInButton = new Button();
             userNameTextBox = new TextBox();
             passwordTextBox = new TextBox();
+            label3 = new Label();
+            label4 = new Label();
+            usernameSecurity = new TextBox();
+            securityKeyTextBox = new TextBox();
+            resetPasswordButton = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -81,6 +86,7 @@
             // userNameTextBox
             // 
             userNameTextBox.Location = new Point(234, 239);
+            userNameTextBox.MaxLength = 15;
             userNameTextBox.Name = "userNameTextBox";
             userNameTextBox.Size = new Size(152, 23);
             userNameTextBox.TabIndex = 4;
@@ -88,10 +94,60 @@
             // passwordTextBox
             // 
             passwordTextBox.Location = new Point(234, 271);
+            passwordTextBox.MaxLength = 15;
             passwordTextBox.Name = "passwordTextBox";
             passwordTextBox.PasswordChar = '*';
             passwordTextBox.Size = new Size(152, 23);
             passwordTextBox.TabIndex = 5;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.BackColor = Color.Transparent;
+            label3.Location = new Point(432, 239);
+            label3.Name = "label3";
+            label3.Size = new Size(100, 15);
+            label3.TabIndex = 6;
+            label3.Text = "Forgot Password?";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.BackColor = Color.Transparent;
+            label4.Location = new Point(432, 301);
+            label4.Name = "label4";
+            label4.Size = new Size(71, 15);
+            label4.TabIndex = 7;
+            label4.Text = "Security Key";
+            // 
+            // usernameSecurity
+            // 
+            usernameSecurity.Location = new Point(432, 263);
+            usernameSecurity.MaxLength = 15;
+            usernameSecurity.Name = "usernameSecurity";
+            usernameSecurity.PlaceholderText = "Enter Username";
+            usernameSecurity.Size = new Size(117, 23);
+            usernameSecurity.TabIndex = 8;
+            // 
+            // securityKeyTextBox
+            // 
+            securityKeyTextBox.Location = new Point(402, 322);
+            securityKeyTextBox.MaxLength = 15;
+            securityKeyTextBox.Name = "securityKeyTextBox";
+            securityKeyTextBox.PasswordChar = '*';
+            securityKeyTextBox.PlaceholderText = "Name of your first school?";
+            securityKeyTextBox.Size = new Size(156, 23);
+            securityKeyTextBox.TabIndex = 9;
+            // 
+            // resetPasswordButton
+            // 
+            resetPasswordButton.Location = new Point(432, 368);
+            resetPasswordButton.Name = "resetPasswordButton";
+            resetPasswordButton.Size = new Size(102, 23);
+            resetPasswordButton.TabIndex = 10;
+            resetPasswordButton.Text = "Reset Password";
+            resetPasswordButton.UseVisualStyleBackColor = true;
+            resetPasswordButton.Click += resetPasswordButton_Click;
             // 
             // LogInForm
             // 
@@ -99,7 +155,12 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Images.loginformbackground;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(579, 375);
+            ClientSize = new Size(579, 434);
+            Controls.Add(resetPasswordButton);
+            Controls.Add(securityKeyTextBox);
+            Controls.Add(usernameSecurity);
+            Controls.Add(label4);
+            Controls.Add(label3);
             Controls.Add(passwordTextBox);
             Controls.Add(userNameTextBox);
             Controls.Add(logInButton);
@@ -123,5 +184,10 @@
         private Button logInButton;
         private TextBox userNameTextBox;
         private TextBox passwordTextBox;
+        private Label label3;
+        private Label label4;
+        private TextBox usernameSecurity;
+        private TextBox securityKeyTextBox;
+        private Button resetPasswordButton;
     }
 }

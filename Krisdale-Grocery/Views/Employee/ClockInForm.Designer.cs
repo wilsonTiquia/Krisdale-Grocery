@@ -59,6 +59,7 @@
             // userNameTextBox
             // 
             userNameTextBox.Location = new Point(133, 61);
+            userNameTextBox.MaxLength = 15;
             userNameTextBox.Name = "userNameTextBox";
             userNameTextBox.Size = new Size(156, 23);
             userNameTextBox.TabIndex = 2;
@@ -66,6 +67,7 @@
             // passwordTextBox
             // 
             passwordTextBox.Location = new Point(133, 99);
+            passwordTextBox.MaxLength = 15;
             passwordTextBox.Name = "passwordTextBox";
             passwordTextBox.PasswordChar = '*';
             passwordTextBox.Size = new Size(156, 23);

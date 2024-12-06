@@ -43,6 +43,9 @@
             saveButton = new Button();
             clearAllButton = new Button();
             backToMainMenuButton = new Button();
+            fNameRule = new Label();
+            numberRules = new Label();
+            lNameRule = new Label();
             ((System.ComponentModel.ISupportInitialize)uploadedImagePictureBox).BeginInit();
             SuspendLayout();
             // 
@@ -96,23 +99,29 @@
             // contactNumberTextBox
             // 
             contactNumberTextBox.Location = new Point(251, 112);
+            contactNumberTextBox.MaxLength = 11;
             contactNumberTextBox.Name = "contactNumberTextBox";
             contactNumberTextBox.Size = new Size(201, 23);
             contactNumberTextBox.TabIndex = 5;
+            contactNumberTextBox.TextChanged += contactNumberTextBox_TextChanged;
             // 
             // lastNameTextBox
             // 
             lastNameTextBox.Location = new Point(251, 74);
+            lastNameTextBox.MaxLength = 15;
             lastNameTextBox.Name = "lastNameTextBox";
             lastNameTextBox.Size = new Size(201, 23);
             lastNameTextBox.TabIndex = 6;
+            lastNameTextBox.TextChanged += lastNameTextBox_TextChanged;
             // 
             // firstNameTextBox
             // 
             firstNameTextBox.Location = new Point(251, 38);
+            firstNameTextBox.MaxLength = 15;
             firstNameTextBox.Name = "firstNameTextBox";
             firstNameTextBox.Size = new Size(201, 23);
             firstNameTextBox.TabIndex = 7;
+            firstNameTextBox.TextChanged += firstNameTextBox_TextChanged;
             // 
             // uploadedImagePictureBox
             // 
@@ -186,12 +195,46 @@
             backToMainMenuButton.UseVisualStyleBackColor = true;
             backToMainMenuButton.Click += backToMainMenuButton_Click;
             // 
+            // fNameRule
+            // 
+            fNameRule.AutoSize = true;
+            fNameRule.ForeColor = Color.Red;
+            fNameRule.Location = new Point(1, 9);
+            fNameRule.Name = "fNameRule";
+            fNameRule.Size = new Size(214, 15);
+            fNameRule.TabIndex = 15;
+            fNameRule.Text = "First Name must be 3-15 Characters a-z";
+            // 
+            // numberRules
+            // 
+            numberRules.AutoSize = true;
+            numberRules.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            numberRules.ForeColor = Color.Red;
+            numberRules.Location = new Point(5, 96);
+            numberRules.Name = "numberRules";
+            numberRules.Size = new Size(181, 13);
+            numberRules.TabIndex = 16;
+            numberRules.Text = "Contact number must be 11 digits";
+            // 
+            // lNameRule
+            // 
+            lNameRule.AutoSize = true;
+            lNameRule.ForeColor = Color.Red;
+            lNameRule.Location = new Point(5, 56);
+            lNameRule.Name = "lNameRule";
+            lNameRule.Size = new Size(213, 15);
+            lNameRule.TabIndex = 17;
+            lNameRule.Text = "Last Name must be 3-15 Characters a-z";
+            // 
             // AddEmployeeForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Images.allformsbackground;
-            ClientSize = new Size(755, 412);
+            ClientSize = new Size(867, 412);
+            Controls.Add(lNameRule);
+            Controls.Add(numberRules);
+            Controls.Add(fNameRule);
             Controls.Add(backToMainMenuButton);
             Controls.Add(clearAllButton);
             Controls.Add(saveButton);
@@ -232,5 +275,8 @@
         private Button saveButton;
         private Button clearAllButton;
         private Button backToMainMenuButton;
+        private Label fNameRule;
+        private Label numberRules;
+        private Label lNameRule;
     }
 }

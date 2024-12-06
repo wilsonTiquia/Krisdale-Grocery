@@ -45,6 +45,7 @@
             // searchTextBox
             // 
             searchTextBox.Location = new Point(18, 49);
+            searchTextBox.MaxLength = 15;
             searchTextBox.Name = "searchTextBox";
             searchTextBox.Size = new Size(234, 23);
             searchTextBox.TabIndex = 1;

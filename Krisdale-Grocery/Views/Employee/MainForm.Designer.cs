@@ -37,7 +37,7 @@
             clockOutButton = new Button();
             shoppingListFlowLayoutPanel = new FlowLayoutPanel();
             pictureBox1 = new PictureBox();
-            label1 = new Label();
+            cashierName = new Label();
             panel2 = new Panel();
             label3 = new Label();
             nextPageButton = new Button();
@@ -162,6 +162,7 @@
             shoppingListFlowLayoutPanel.Padding = new Padding(10, 0, 0, 0);
             shoppingListFlowLayoutPanel.Size = new Size(658, 477);
             shoppingListFlowLayoutPanel.TabIndex = 8;
+            shoppingListFlowLayoutPanel.Paint += shoppingListFlowLayoutPanel_Paint;
             // 
             // pictureBox1
             // 
@@ -174,16 +175,16 @@
             pictureBox1.TabIndex = 9;
             pictureBox1.TabStop = false;
             // 
-            // label1
+            // cashierName
             // 
-            label1.AutoSize = true;
-            label1.BackColor = Color.Transparent;
-            label1.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(148, 9);
-            label1.Name = "label1";
-            label1.Size = new Size(92, 32);
-            label1.TabIndex = 10;
-            label1.Text = "Cashier";
+            cashierName.AutoSize = true;
+            cashierName.BackColor = Color.Transparent;
+            cashierName.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
+            cashierName.Location = new Point(148, 9);
+            cashierName.Name = "cashierName";
+            cashierName.Size = new Size(92, 32);
+            cashierName.TabIndex = 10;
+            cashierName.Text = "Cashier";
             // 
             // panel2
             // 
@@ -231,11 +232,13 @@
             // quantityTextBox
             // 
             quantityTextBox.Location = new Point(65, 54);
+            quantityTextBox.MaxLength = 3;
             quantityTextBox.Name = "quantityTextBox";
             quantityTextBox.Size = new Size(44, 23);
             quantityTextBox.TabIndex = 4;
             quantityTextBox.Text = "1";
             quantityTextBox.TextAlign = HorizontalAlignment.Center;
+            quantityTextBox.TextChanged += quantityTextBox_TextChanged;
             // 
             // previousPageButton
             // 
@@ -281,6 +284,7 @@
             // 
             searchTextBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             searchTextBox.Location = new Point(87, 9);
+            searchTextBox.MaxLength = 30;
             searchTextBox.Name = "searchTextBox";
             searchTextBox.Size = new Size(230, 29);
             searchTextBox.TabIndex = 1;
@@ -380,7 +384,7 @@
             Controls.Add(pageNumberTextBox);
             Controls.Add(label4);
             Controls.Add(panel2);
-            Controls.Add(label1);
+            Controls.Add(cashierName);
             Controls.Add(shoppingListFlowLayoutPanel);
             Controls.Add(clockOutButton);
             Controls.Add(clockInButton);
@@ -393,6 +397,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MainForm";
             FormClosed += MainForm_FormClosed;
+            Load += MainForm_Load;
             totalCostPanel.ResumeLayout(false);
             totalCostPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -410,7 +415,7 @@
         private Button clockOutButton;
         private FlowLayoutPanel shoppingListFlowLayoutPanel;
         private PictureBox pictureBox1;
-        private Label label1;
+        private Label cashierName;
         private Panel panel2;
         private Button clearButton;
         private Button searchButton;

@@ -37,6 +37,7 @@
             computeButton = new Button();
             closeButton = new Button();
             cartRichTextBox = new RichTextBox();
+            label4 = new Label();
             SuspendLayout();
             // 
             // label1
@@ -76,6 +77,7 @@
             // amountPaidTextBox
             // 
             amountPaidTextBox.Location = new Point(904, 124);
+            amountPaidTextBox.MaxLength = 20;
             amountPaidTextBox.Name = "amountPaidTextBox";
             amountPaidTextBox.Size = new Size(205, 33);
             amountPaidTextBox.TabIndex = 3;
@@ -85,7 +87,7 @@
             label3.AutoSize = true;
             label3.BackColor = Color.Transparent;
             label3.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
-            label3.Location = new Point(772, 206);
+            label3.Location = new Point(772, 283);
             label3.Margin = new Padding(5, 0, 5, 0);
             label3.Name = "label3";
             label3.Size = new Size(81, 25);
@@ -95,14 +97,14 @@
             // changeTextBox
             // 
             changeTextBox.Enabled = false;
-            changeTextBox.Location = new Point(904, 206);
+            changeTextBox.Location = new Point(904, 283);
             changeTextBox.Name = "changeTextBox";
             changeTextBox.Size = new Size(205, 33);
             changeTextBox.TabIndex = 5;
             // 
             // computeButton
             // 
-            computeButton.Location = new Point(948, 163);
+            computeButton.Location = new Point(946, 203);
             computeButton.Name = "computeButton";
             computeButton.Size = new Size(110, 36);
             computeButton.TabIndex = 6;
@@ -113,7 +115,7 @@
             // closeButton
             // 
             closeButton.Enabled = false;
-            closeButton.Location = new Point(957, 249);
+            closeButton.Location = new Point(958, 322);
             closeButton.Name = "closeButton";
             closeButton.Size = new Size(83, 35);
             closeButton.TabIndex = 7;
@@ -129,6 +131,18 @@
             cartRichTextBox.TabIndex = 8;
             cartRichTextBox.Text = "";
             // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.BackColor = Color.Transparent;
+            label4.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            label4.ForeColor = Color.Red;
+            label4.Location = new Point(753, 170);
+            label4.Name = "label4";
+            label4.Size = new Size(370, 17);
+            label4.TabIndex = 9;
+            label4.Text = "Amount Paid must be numbers only and greater than the total";
+            // 
             // PaymentForm
             // 
             AutoScaleDimensions = new SizeF(11F, 25F);
@@ -136,6 +150,7 @@
             BackgroundImage = Images.allformsbackground;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1145, 681);
+            Controls.Add(label4);
             Controls.Add(cartRichTextBox);
             Controls.Add(closeButton);
             Controls.Add(computeButton);
@@ -167,5 +182,6 @@
         private Button computeButton;
         private Button closeButton;
         private RichTextBox cartRichTextBox;
+        private Label label4;
     }
 }

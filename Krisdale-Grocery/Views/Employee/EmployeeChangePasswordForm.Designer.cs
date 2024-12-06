@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EmployeeChangePasswordForm));
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
@@ -36,6 +37,7 @@
             newPasswordTextBox = new TextBox();
             changePasswordButton = new Button();
             backToMainMenuButton = new Button();
+            passwordRulesLabel = new Label();
             SuspendLayout();
             // 
             // label1
@@ -70,7 +72,9 @@
             // 
             // usernameTextBox
             // 
+            usernameTextBox.Enabled = false;
             usernameTextBox.Location = new Point(156, 48);
+            usernameTextBox.MaxLength = 15;
             usernameTextBox.Name = "usernameTextBox";
             usernameTextBox.Size = new Size(196, 23);
             usernameTextBox.TabIndex = 3;
@@ -78,20 +82,25 @@
             // passwordTextBox
             // 
             passwordTextBox.Location = new Point(156, 85);
+            passwordTextBox.MaxLength = 15;
             passwordTextBox.Name = "passwordTextBox";
+            passwordTextBox.PasswordChar = '*';
             passwordTextBox.Size = new Size(196, 23);
             passwordTextBox.TabIndex = 4;
             // 
             // newPasswordTextBox
             // 
             newPasswordTextBox.Location = new Point(156, 127);
+            newPasswordTextBox.MaxLength = 15;
             newPasswordTextBox.Name = "newPasswordTextBox";
+            newPasswordTextBox.PasswordChar = '*';
             newPasswordTextBox.Size = new Size(196, 23);
             newPasswordTextBox.TabIndex = 5;
+            newPasswordTextBox.TextChanged += newPasswordTextBox_TextChanged;
             // 
             // changePasswordButton
             // 
-            changePasswordButton.Location = new Point(138, 172);
+            changePasswordButton.Location = new Point(238, 242);
             changePasswordButton.Name = "changePasswordButton";
             changePasswordButton.Size = new Size(123, 41);
             changePasswordButton.TabIndex = 6;
@@ -101,7 +110,7 @@
             // 
             // backToMainMenuButton
             // 
-            backToMainMenuButton.Location = new Point(138, 228);
+            backToMainMenuButton.Location = new Point(63, 237);
             backToMainMenuButton.Name = "backToMainMenuButton";
             backToMainMenuButton.Size = new Size(123, 51);
             backToMainMenuButton.TabIndex = 7;
@@ -109,13 +118,24 @@
             backToMainMenuButton.UseVisualStyleBackColor = true;
             backToMainMenuButton.Click += backToMainMenuButton_Click;
             // 
+            // passwordRulesLabel
+            // 
+            passwordRulesLabel.AutoSize = true;
+            passwordRulesLabel.ForeColor = Color.Red;
+            passwordRulesLabel.Location = new Point(358, 51);
+            passwordRulesLabel.Name = "passwordRulesLabel";
+            passwordRulesLabel.Size = new Size(313, 75);
+            passwordRulesLabel.TabIndex = 16;
+            passwordRulesLabel.Text = resources.GetString("passwordRulesLabel.Text");
+            // 
             // EmployeeChangePasswordForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Images.allformsbackground;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(495, 313);
+            ClientSize = new Size(749, 402);
+            Controls.Add(passwordRulesLabel);
             Controls.Add(backToMainMenuButton);
             Controls.Add(changePasswordButton);
             Controls.Add(newPasswordTextBox);
@@ -128,6 +148,7 @@
             Name = "EmployeeChangePasswordForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "EmployeeChangePasswordForm";
+            Load += EmployeeChangePasswordForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -142,5 +163,6 @@
         private TextBox newPasswordTextBox;
         private Button changePasswordButton;
         private Button backToMainMenuButton;
+        private Label passwordRulesLabel;
     }
 }

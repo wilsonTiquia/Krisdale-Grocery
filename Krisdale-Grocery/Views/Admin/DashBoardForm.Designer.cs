@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DashBoardForm));
             pictureBox1 = new PictureBox();
             selectedOptionLabel = new Label();
             panel1 = new Panel();
@@ -41,7 +42,10 @@
             label2 = new Label();
             mainPanel = new Panel();
             settingsPanel = new Panel();
+            label13 = new Label();
+            label12 = new Label();
             panel7 = new Panel();
+            changePassRules = new Label();
             newPasswordForExistingTextBox = new TextBox();
             label11 = new Label();
             changePasswordButton = new Button();
@@ -50,6 +54,14 @@
             passwordExistingTextBox = new TextBox();
             label10 = new Label();
             panel6 = new Panel();
+            securityKeyRule = new Label();
+            passwordMatchLabel = new Label();
+            passwordRulesLabel = new Label();
+            usernameRuleLabel = new Label();
+            label16 = new Label();
+            securityKeyTextBox = new TextBox();
+            confirmPassword = new TextBox();
+            label14 = new Label();
             newAccountHidePassword = new Button();
             newAccountShowPassword = new Button();
             addNewAdminAccount = new Button();
@@ -85,6 +97,7 @@
             addProductButton = new Button();
             searchProductButton = new Button();
             searchProductTextBox = new TextBox();
+            button2 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel1.SuspendLayout();
             mainPanel.SuspendLayout();
@@ -126,6 +139,7 @@
             // 
             panel1.BackColor = Color.Transparent;
             panel1.BorderStyle = BorderStyle.FixedSingle;
+            panel1.Controls.Add(button2);
             panel1.Controls.Add(logOutButton);
             panel1.Controls.Add(settingsButton);
             panel1.Controls.Add(label1);
@@ -178,7 +192,7 @@
             // 
             crudProductsLabel.AutoSize = true;
             crudProductsLabel.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
-            crudProductsLabel.Location = new Point(23, 279);
+            crudProductsLabel.Location = new Point(23, 236);
             crudProductsLabel.Name = "crudProductsLabel";
             crudProductsLabel.Size = new Size(146, 50);
             crudProductsLabel.TabIndex = 7;
@@ -190,7 +204,7 @@
             label5.AutoSize = true;
             label5.BackColor = Color.Transparent;
             label5.Font = new Font("Tahoma", 27.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label5.Location = new Point(17, 212);
+            label5.Location = new Point(17, 191);
             label5.Name = "label5";
             label5.Size = new Size(160, 45);
             label5.TabIndex = 6;
@@ -243,6 +257,8 @@
             // 
             // settingsPanel
             // 
+            settingsPanel.Controls.Add(label13);
+            settingsPanel.Controls.Add(label12);
             settingsPanel.Controls.Add(panel7);
             settingsPanel.Controls.Add(panel6);
             settingsPanel.Location = new Point(0, 0);
@@ -251,9 +267,31 @@
             settingsPanel.TabIndex = 4;
             settingsPanel.Visible = false;
             // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
+            label13.Location = new Point(17, 340);
+            label13.Name = "label13";
+            label13.Size = new Size(243, 30);
+            label13.TabIndex = 7;
+            label13.Text = "Change Password Admin";
+            label13.Click += label13_Click;
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
+            label12.Location = new Point(18, 23);
+            label12.Name = "label12";
+            label12.Size = new Size(166, 30);
+            label12.TabIndex = 6;
+            label12.Text = "Add New Admin";
+            // 
             // panel7
             // 
             panel7.BackColor = Color.FromArgb(244, 244, 244);
+            panel7.Controls.Add(changePassRules);
             panel7.Controls.Add(newPasswordForExistingTextBox);
             panel7.Controls.Add(label11);
             panel7.Controls.Add(changePasswordButton);
@@ -261,22 +299,37 @@
             panel7.Controls.Add(userNameExistingTextBox);
             panel7.Controls.Add(passwordExistingTextBox);
             panel7.Controls.Add(label10);
-            panel7.Location = new Point(14, 283);
+            panel7.Location = new Point(18, 375);
             panel7.Name = "panel7";
-            panel7.Size = new Size(512, 201);
+            panel7.Size = new Size(824, 201);
             panel7.TabIndex = 5;
+            panel7.Paint += panel7_Paint;
+            // 
+            // changePassRules
+            // 
+            changePassRules.AutoSize = true;
+            changePassRules.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            changePassRules.ForeColor = Color.Red;
+            changePassRules.Location = new Point(519, 28);
+            changePassRules.Name = "changePassRules";
+            changePassRules.Size = new Size(305, 65);
+            changePassRules.TabIndex = 14;
+            changePassRules.Text = resources.GetString("changePassRules.Text");
             // 
             // newPasswordForExistingTextBox
             // 
-            newPasswordForExistingTextBox.Location = new Point(131, 107);
+            newPasswordForExistingTextBox.Location = new Point(128, 99);
+            newPasswordForExistingTextBox.MaxLength = 15;
             newPasswordForExistingTextBox.Name = "newPasswordForExistingTextBox";
+            newPasswordForExistingTextBox.PasswordChar = '*';
             newPasswordForExistingTextBox.Size = new Size(357, 23);
             newPasswordForExistingTextBox.TabIndex = 6;
+            newPasswordForExistingTextBox.TextChanged += newPasswordForExistingTextBox_TextChanged;
             // 
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(28, 112);
+            label11.Location = new Point(28, 107);
             label11.Name = "label11";
             label11.Size = new Size(87, 15);
             label11.TabIndex = 5;
@@ -304,6 +357,7 @@
             // userNameExistingTextBox
             // 
             userNameExistingTextBox.Location = new Point(128, 31);
+            userNameExistingTextBox.MaxLength = 15;
             userNameExistingTextBox.Name = "userNameExistingTextBox";
             userNameExistingTextBox.Size = new Size(357, 23);
             userNameExistingTextBox.TabIndex = 0;
@@ -311,7 +365,9 @@
             // passwordExistingTextBox
             // 
             passwordExistingTextBox.Location = new Point(128, 70);
+            passwordExistingTextBox.MaxLength = 15;
             passwordExistingTextBox.Name = "passwordExistingTextBox";
+            passwordExistingTextBox.PasswordChar = '*';
             passwordExistingTextBox.Size = new Size(357, 23);
             passwordExistingTextBox.TabIndex = 1;
             // 
@@ -327,6 +383,14 @@
             // panel6
             // 
             panel6.BackColor = Color.FromArgb(244, 244, 244);
+            panel6.Controls.Add(securityKeyRule);
+            panel6.Controls.Add(passwordMatchLabel);
+            panel6.Controls.Add(passwordRulesLabel);
+            panel6.Controls.Add(usernameRuleLabel);
+            panel6.Controls.Add(label16);
+            panel6.Controls.Add(securityKeyTextBox);
+            panel6.Controls.Add(confirmPassword);
+            panel6.Controls.Add(label14);
             panel6.Controls.Add(newAccountHidePassword);
             panel6.Controls.Add(newAccountShowPassword);
             panel6.Controls.Add(addNewAdminAccount);
@@ -334,14 +398,92 @@
             panel6.Controls.Add(newAccountUsernameTextBox);
             panel6.Controls.Add(newAccountPasswordTextBox);
             panel6.Controls.Add(label6);
-            panel6.Location = new Point(17, 29);
+            panel6.Location = new Point(17, 68);
             panel6.Name = "panel6";
-            panel6.Size = new Size(512, 201);
+            panel6.Size = new Size(888, 259);
             panel6.TabIndex = 3;
+            // 
+            // securityKeyRule
+            // 
+            securityKeyRule.AutoSize = true;
+            securityKeyRule.ForeColor = Color.Red;
+            securityKeyRule.Location = new Point(541, 228);
+            securityKeyRule.Name = "securityKeyRule";
+            securityKeyRule.Size = new Size(284, 15);
+            securityKeyRule.TabIndex = 15;
+            securityKeyRule.Text = "Security key Length must be 3-15 characters only a-z";
+            // 
+            // passwordMatchLabel
+            // 
+            passwordMatchLabel.AutoSize = true;
+            passwordMatchLabel.ForeColor = Color.Red;
+            passwordMatchLabel.Location = new Point(128, 133);
+            passwordMatchLabel.Name = "passwordMatchLabel";
+            passwordMatchLabel.Size = new Size(277, 15);
+            passwordMatchLabel.TabIndex = 14;
+            passwordMatchLabel.Text = "Password and Confirm Password must be the same";
+            // 
+            // passwordRulesLabel
+            // 
+            passwordRulesLabel.AutoSize = true;
+            passwordRulesLabel.ForeColor = Color.Red;
+            passwordRulesLabel.Location = new Point(551, 49);
+            passwordRulesLabel.Name = "passwordRulesLabel";
+            passwordRulesLabel.Size = new Size(313, 75);
+            passwordRulesLabel.TabIndex = 13;
+            passwordRulesLabel.Text = resources.GetString("passwordRulesLabel.Text");
+            // 
+            // usernameRuleLabel
+            // 
+            usernameRuleLabel.AutoSize = true;
+            usernameRuleLabel.ForeColor = Color.Red;
+            usernameRuleLabel.Location = new Point(551, 31);
+            usernameRuleLabel.Name = "usernameRuleLabel";
+            usernameRuleLabel.Size = new Size(274, 15);
+            usernameRuleLabel.TabIndex = 12;
+            usernameRuleLabel.Text = "Username Length must be 3-15 characters only a-z";
+            // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.Location = new Point(535, 169);
+            label16.Name = "label16";
+            label16.Size = new Size(317, 15);
+            label16.TabIndex = 11;
+            label16.Text = "Security Question: What was the name of your first school?";
+            // 
+            // securityKeyTextBox
+            // 
+            securityKeyTextBox.Location = new Point(535, 196);
+            securityKeyTextBox.MaxLength = 15;
+            securityKeyTextBox.Name = "securityKeyTextBox";
+            securityKeyTextBox.PasswordChar = '*';
+            securityKeyTextBox.Size = new Size(329, 23);
+            securityKeyTextBox.TabIndex = 10;
+            securityKeyTextBox.TextChanged += securityKeyTextBox_TextChanged;
+            // 
+            // confirmPassword
+            // 
+            confirmPassword.Location = new Point(160, 101);
+            confirmPassword.MaxLength = 15;
+            confirmPassword.Name = "confirmPassword";
+            confirmPassword.PasswordChar = '*';
+            confirmPassword.Size = new Size(297, 23);
+            confirmPassword.TabIndex = 8;
+            confirmPassword.TextChanged += confirmPassword_TextChanged;
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Location = new Point(44, 104);
+            label14.Name = "label14";
+            label14.Size = new Size(110, 15);
+            label14.TabIndex = 7;
+            label14.Text = "Confirm Password: ";
             // 
             // newAccountHidePassword
             // 
-            newAccountHidePassword.Location = new Point(359, 101);
+            newAccountHidePassword.Location = new Point(204, 161);
             newAccountHidePassword.Name = "newAccountHidePassword";
             newAccountHidePassword.Size = new Size(126, 23);
             newAccountHidePassword.TabIndex = 6;
@@ -351,7 +493,7 @@
             // 
             // newAccountShowPassword
             // 
-            newAccountShowPassword.Location = new Point(125, 101);
+            newAccountShowPassword.Location = new Point(47, 161);
             newAccountShowPassword.Name = "newAccountShowPassword";
             newAccountShowPassword.Size = new Size(126, 23);
             newAccountShowPassword.TabIndex = 5;
@@ -361,7 +503,7 @@
             // 
             // addNewAdminAccount
             // 
-            addNewAdminAccount.Location = new Point(24, 150);
+            addNewAdminAccount.Location = new Point(48, 205);
             addNewAdminAccount.Name = "addNewAdminAccount";
             addNewAdminAccount.Size = new Size(184, 34);
             addNewAdminAccount.TabIndex = 4;
@@ -381,17 +523,21 @@
             // newAccountUsernameTextBox
             // 
             newAccountUsernameTextBox.Location = new Point(128, 31);
+            newAccountUsernameTextBox.MaxLength = 15;
             newAccountUsernameTextBox.Name = "newAccountUsernameTextBox";
-            newAccountUsernameTextBox.Size = new Size(357, 23);
+            newAccountUsernameTextBox.Size = new Size(202, 23);
             newAccountUsernameTextBox.TabIndex = 0;
+            newAccountUsernameTextBox.TextChanged += newAccountUsernameTextBox_TextChanged;
             // 
             // newAccountPasswordTextBox
             // 
             newAccountPasswordTextBox.Location = new Point(128, 70);
+            newAccountPasswordTextBox.MaxLength = 15;
             newAccountPasswordTextBox.Name = "newAccountPasswordTextBox";
             newAccountPasswordTextBox.PasswordChar = '*';
-            newAccountPasswordTextBox.Size = new Size(357, 23);
+            newAccountPasswordTextBox.Size = new Size(202, 23);
             newAccountPasswordTextBox.TabIndex = 1;
+            newAccountPasswordTextBox.TextChanged += newAccountPasswordTextBox_TextChanged;
             // 
             // label6
             // 
@@ -724,6 +870,16 @@
             searchProductTextBox.Size = new Size(436, 39);
             searchProductTextBox.TabIndex = 0;
             // 
+            // button2
+            // 
+            button2.Location = new Point(23, 306);
+            button2.Name = "button2";
+            button2.Size = new Size(125, 38);
+            button2.TabIndex = 11;
+            button2.Text = "View Logs";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
             // DashBoardForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -745,6 +901,7 @@
             panel1.PerformLayout();
             mainPanel.ResumeLayout(false);
             settingsPanel.ResumeLayout(false);
+            settingsPanel.PerformLayout();
             panel7.ResumeLayout(false);
             panel7.PerformLayout();
             panel6.ResumeLayout(false);
@@ -823,5 +980,17 @@
         private TextBox newAccountUsernameTextBox;
         private Button newAccountHidePassword;
         private Button newAccountShowPassword;
+        private Label label13;
+        private Label label12;
+        private Label label14;
+        private TextBox securityKeyTextBox;
+        private TextBox confirmPassword;
+        private Label label16;
+        private Label passwordRulesLabel;
+        private Label usernameRuleLabel;
+        private Label passwordMatchLabel;
+        private Label securityKeyRule;
+        private Label changePassRules;
+        private Button button2;
     }
 }

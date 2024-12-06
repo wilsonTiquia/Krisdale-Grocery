@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -19,6 +20,8 @@ namespace Krisdale_Grocery.Views.Admin
         public ProductModel productModel { get; set; }
         private bool changeProductImage = false;
         private byte[] image;
+
+        public String Username { get; set; }    
         public EditProductForm()
         {
             InitializeComponent();
@@ -83,19 +86,56 @@ namespace Krisdale_Grocery.Views.Admin
         }
         private void saveButton_Click(object sender, EventArgs e)
         {
-            double price = double.Parse(priceTextBox.Text);
-            int quantity = int.Parse(quantityTextBox.Text);
-
-            if (changeProductImage == false)
+            if (DatabaseHelper.isProductExisting(productNameTextBox.Text) >= 1)
             {
-               
-                DatabaseHelper.EditProductNoImage(productNameTextBox.Text, price, quantity, productModel.Id);
+                MessageBox.Show("Product already exist!");
+                return;
+            }
+            bool isValidName = false;
+            bool isValidQuantity = false;
+            bool isValidPrice = false;
+            string namePattern = "^[a-zA-Z0-9 ]{3,15}$";
+
+            string pricePattern = @"^-?\d+(\.\d+)?$";
+            string quantityPattern = @"^\d+$";
+
+            if (Regex.IsMatch(productNameTextBox.Text, namePattern))
+            {
+                isValidName = true;
+            }
+            if (Regex.IsMatch(quantityTextBox.Text, quantityPattern))
+            {
+                isValidQuantity = true;
+            }
+            if (Regex.IsMatch(priceTextBox.Text, pricePattern))
+            {
+                isValidPrice = true;
+            }
+
+            if (isValidName && isValidQuantity && isValidPrice)
+            {
+                double price = double.Parse(priceTextBox.Text);
+                int quantity = int.Parse(quantityTextBox.Text);
+
+                if (changeProductImage == false)
+                {
+
+                    DatabaseHelper.EditProductNoImage(productNameTextBox.Text, price, quantity, productModel.Id);
+                    DatabaseHelper.InsertLog(this.Username, DateTime.Now, "Edited a new product ");
+                }
+                else
+                {
+                    DatabaseHelper.InsertLog(this.Username, DateTime.Now, "Edited a new product ");
+                    DatabaseHelper.EditProduct(productNameTextBox.Text, price, quantity, getSavedImage(), productModel.Id);
+                }
+                MessageBox.Show("Product successfully edited");
+
             }
             else
             {
-                DatabaseHelper.EditProduct(productNameTextBox.Text, price, quantity, getSavedImage(), productModel.Id);
+                MessageBox.Show("Please make sure that the rules are followed in naming, price and quantity");
             }
-            MessageBox.Show("Product successfully edited");
+           
             this.Close();
         }
 
@@ -111,6 +151,7 @@ namespace Krisdale_Grocery.Views.Admin
 
         private void button4_Click(object sender, EventArgs e)
         {
+            DatabaseHelper.InsertLog(this.Username, DateTime.Now, "Deleted a  product ");
             DatabaseHelper.DeleteProduct(productModel.Id);
             MessageBox.Show("Product Deleted");
             this.Close();
@@ -125,6 +166,47 @@ namespace Krisdale_Grocery.Views.Admin
         private void backToMainMenuButton_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void productNameTextBox_TextChanged(object sender, EventArgs e)
+        {
+            string namePattern = "^[a-zA-Z0-9 ]{3,15}$";
+
+            if (Regex.IsMatch(productNameTextBox.Text, namePattern))
+            {
+                pNameRule.Visible = false;
+            }
+            else
+            {
+                pNameRule.Visible = true;
+            }
+        }
+
+        private void priceTextBox_TextChanged(object sender, EventArgs e)
+        {
+            string pattern = @"^-?\d+(\.\d+)?$";
+            if (Regex.IsMatch(priceTextBox.Text, pattern))
+            {
+                pRule.Visible = false;
+            }
+            else
+            {
+                pRule.Visible = true;
+            }
+
+        }
+
+        private void quantityTextBox_TextChanged(object sender, EventArgs e)
+        {
+            string pattern = @"^\d+$";
+            if (Regex.IsMatch(quantityTextBox.Text, pattern))
+            {
+                qRule.Visible = false;
+            }
+            else
+            {
+                qRule.Visible = true;
+            }
         }
     }
 }

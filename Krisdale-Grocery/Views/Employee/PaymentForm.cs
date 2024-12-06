@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -41,8 +42,27 @@ namespace Krisdale_Grocery.Views.Employee
 
         private void computeButton_Click(object sender, EventArgs e)
         {
-            changeTextBox.Text = (double.Parse(amountPaidTextBox.Text) - totalAmount).ToString("F2");
-            closeButton.Enabled = true;
+            string pattern = @"^\d+(\.\d+)?$"; // Regex for numbers only
+           
+
+            if (Regex.IsMatch(amountPaidTextBox.Text, pattern))
+            {
+                if(double.Parse(amountPaidTextBox.Text) < totalAmount)
+                {
+                    MessageBox.Show("Amount paid must be greater than the total amount");
+                }
+                if (double.Parse(amountPaidTextBox.Text) > totalAmount)
+                {
+                    changeTextBox.Text = (double.Parse(amountPaidTextBox.Text) - totalAmount).ToString("F2");
+                    closeButton.Enabled = true;
+                }
+               
+            }
+            else
+            {
+                MessageBox.Show("Must only contain numbers");
+            }
+                
         }
 
         private void PaymentForm_Load(object sender, EventArgs e)

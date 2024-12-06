@@ -41,6 +41,9 @@
             deleteProduct = new Button();
             uploadedImagePictureBox = new PictureBox();
             backToMainMenuButton = new Button();
+            pRule = new Label();
+            qRule = new Label();
+            pNameRule = new Label();
             ((System.ComponentModel.ISupportInitialize)uploadedImagePictureBox).BeginInit();
             SuspendLayout();
             // 
@@ -90,6 +93,7 @@
             productNameTextBox.Name = "productNameTextBox";
             productNameTextBox.Size = new Size(174, 23);
             productNameTextBox.TabIndex = 4;
+            productNameTextBox.TextChanged += productNameTextBox_TextChanged;
             // 
             // priceTextBox
             // 
@@ -97,6 +101,7 @@
             priceTextBox.Name = "priceTextBox";
             priceTextBox.Size = new Size(175, 23);
             priceTextBox.TabIndex = 5;
+            priceTextBox.TextChanged += priceTextBox_TextChanged;
             // 
             // quantityTextBox
             // 
@@ -104,6 +109,7 @@
             quantityTextBox.Name = "quantityTextBox";
             quantityTextBox.Size = new Size(176, 23);
             quantityTextBox.TabIndex = 6;
+            quantityTextBox.TextChanged += quantityTextBox_TextChanged;
             // 
             // uploadImageButton
             // 
@@ -168,6 +174,37 @@
             backToMainMenuButton.UseVisualStyleBackColor = true;
             backToMainMenuButton.Click += backToMainMenuButton_Click;
             // 
+            // pRule
+            // 
+            pRule.AutoSize = true;
+            pRule.ForeColor = Color.Red;
+            pRule.Location = new Point(52, 90);
+            pRule.Name = "pRule";
+            pRule.Size = new Size(162, 15);
+            pRule.TabIndex = 23;
+            pRule.Text = "Price must not contain letters";
+            // 
+            // qRule
+            // 
+            qRule.AutoSize = true;
+            qRule.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            qRule.ForeColor = Color.Red;
+            qRule.Location = new Point(52, 130);
+            qRule.Name = "qRule";
+            qRule.Size = new Size(147, 13);
+            qRule.TabIndex = 22;
+            qRule.Text = "Quantity must be a number";
+            // 
+            // pNameRule
+            // 
+            pNameRule.AutoSize = true;
+            pNameRule.ForeColor = Color.Red;
+            pNameRule.Location = new Point(48, 43);
+            pNameRule.Name = "pNameRule";
+            pNameRule.Size = new Size(365, 15);
+            pNameRule.TabIndex = 21;
+            pNameRule.Text = "Name must be 3 to 15 characters and consist of numbers and letters";
+            // 
             // EditProductForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -175,6 +212,9 @@
             BackgroundImage = Images.allformsbackground;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(800, 450);
+            Controls.Add(pRule);
+            Controls.Add(qRule);
+            Controls.Add(pNameRule);
             Controls.Add(uploadedImagePictureBox);
             Controls.Add(backToMainMenuButton);
             Controls.Add(deleteProduct);
@@ -213,5 +253,8 @@
         private Button deleteProduct;
         private PictureBox uploadedImagePictureBox;
         private Button backToMainMenuButton;
+        private Label pRule;
+        private Label qRule;
+        private Label pNameRule;
     }
 }
