@@ -21,7 +21,7 @@ namespace Krisdale_Grocery.Views.Admin
         private bool changeEmployeeImage = false;
         private byte[] image;
 
-        public String Username { get; set; }    
+        public String Username = "N/A"; 
         public EditEmployeeForm()
         {
             InitializeComponent();
