@@ -33,7 +33,6 @@
             // 
             // listBox1
             // 
-            listBox1.Enabled = false;
             listBox1.FormattingEnabled = true;
             listBox1.ItemHeight = 15;
             listBox1.Location = new Point(12, 12);
